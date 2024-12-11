@@ -15,13 +15,15 @@ import CustomerCovered from "./pages/Dashboard/CustomerCovered/CustomerCovered";
 import CustomerCoveredOutlet from "./pages/Dashboard/CustomerCovered/CustomerCoveredOutlet";
 import CustomerCoveredVan from "./pages/Dashboard/CustomerCovered/CustomerCoveredVan";
 import CustomerCoveredVanInner from "./pages/Dashboard/CustomerCovered/CustomerCoveredVanInner";
+import MissedCustomers from "./pages/Dashboard/MissedCustomers/MissedCustomers";
+import MissedCustomersVan from "./pages/Dashboard/MissedCustomers/MissedCustomersVan";
+import MissedCustomerVanInner from "./pages/Dashboard/MissedCustomers/MissedCustomersVanInner";
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Template />}>
           <Route index  element={<Dashboard />} />
-          <Route path="/masterroute" element={<MasterRoute />} />
           <Route path="/transaction" />
           <Route path="/usermanagement" />
           <Route path="/settings" />
@@ -30,17 +32,30 @@ function App() {
           <Route path="/outletsummary" element={<OutletSummary />} />
           <Route path="/van" element={<Van/>} />
           <Route path="/vansummary" element={<VanSummary/>} />
-          <Route path="/taxmaster" element={<TaxMaster />} />
-          <Route path="/itemgroupmaster" element={<ItemGroupMaster />} />
-          <Route path="/statemaster" element={<StateMaster />} />
-          <Route path="/branchmaster" element={<BranchMaster />} />
           
+          {/* Tax Master */}
+          <Route path="/taxmaster" element={<TaxMaster />} />
+          {/* Item Group Master */}
+          <Route path="/itemgroupmaster" element={<ItemGroupMaster />} />
+          {/* State Master */}
+          <Route path="/statemaster" element={<StateMaster />} />
+          {/* Branch Master */}
+          <Route path="/branchmaster" element={<BranchMaster />} />
+          {/* Route Master */}
+          <Route path="/routemaster" element={<MasterRoute />} />
+
+          {/* Dashboard Customer Covered */}
           <Route path="/customercovered" element={<CustomerCovered />} />
           <Route path="/customercoveredoutlet/:id" element={<CustomerCoveredOutlet />} />
           <Route path="/customercoveredvan/:id" element={<CustomerCoveredVan />} />
           <Route path="/customercoveredvaninner/:id/:type/:route" element={<CustomerCoveredVanInner/>} />
-         
-          <Route path="/missedcustomers" element={<Upgradeplan />} />
+
+          {/* Missed Customers */}
+          <Route path="/missedcustomers" element={<MissedCustomers />} />
+          <Route path="/missedcustomersvan/:id" element={<MissedCustomersVan />} />
+          <Route path="/missedcustomersvaninner/:id/:type/:route" element={<MissedCustomerVanInner/>} />
+
+
           <Route path="/unbilledorders" element={<Upgradeplan />} />
           <Route path="/sales" element={<Upgradeplan />} />
           <Route path="/orders" element={<Upgradeplan />} />

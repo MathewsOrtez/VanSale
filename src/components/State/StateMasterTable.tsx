@@ -6,12 +6,11 @@ import CustomSwitch from "../utilis/CustomSwitch";
 import CustomizedCheckbox from "../utilis/CustomCheckbox";
 import CustomAlert from "../utilis/CustomAlert";
 import { useStates } from "../../context/StateContext";
-import { InputAdornment } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import CustomPagination from "../utilis/Pagination";
 import StateMasterAddNew from "./StateMasterAddNew";
 import DeleteStateMasterModal from "./DeleteStateMasterModal";
 import EditStateMasterModal from "./EditStateMasterModal";
+import SearchBar from "../utilis/SearchBax";
 const StateMasterTable: React.FC = () => {
   const { deleteState, editState, stateData, deleteChecked } = useStates();
   const [openModal, setOpenModal] = useState(false);
@@ -23,12 +22,27 @@ const StateMasterTable: React.FC = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (value: string) => {
+    setSearchTerm(value.toLowerCase());
+    setCurrentPage(1);
+  };
+
+  const filteredData = stateData.filter(
+    (item: any) =>
+      item.name.toLowerCase().includes(searchTerm) ||
+      item.shortname.toLowerCase().includes(searchTerm) ||
+      item.statecode.toLowerCase().includes(searchTerm)
+  );
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = stateData.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setSelectAll(false);
+  }, [currentPage, itemsPerPage, searchTerm]);
 
   // Handle individual checkbox change
   const handleRowCheckboxChange = (srl: number, checked: boolean) => {
@@ -117,7 +131,10 @@ const StateMasterTable: React.FC = () => {
         deleteState(deleteData.srl);
         setSelectAll(false);
         setSelectedRows([]);
-        CustomAlert({ type: "success" ,message: `${deleteData.name} deleted successfully.` });
+        CustomAlert({
+          type: "success",
+          message: `${deleteData.name} deleted successfully.`,
+        });
       },
     });
   };
@@ -156,17 +173,11 @@ const StateMasterTable: React.FC = () => {
           <p className="font-semibold text-lg">State Master</p>
           <div className="flex items-center gap-4">
             {/* Search Bar */}
-            <div className="flex items-center border border-gray-300 rounded-md w-[332px] h-[32px]">
-              {/* Search Icon */}
-              <InputAdornment position="start" className="p-2">
-                <SearchIcon />
-              </InputAdornment>
-              <input
-                type="text"
-                placeholder="Search..."
-                className=" w-full border-none outline-none rounded-md"
-              />
-            </div>
+            <SearchBar
+              onSearch={handleSearch}
+              placeholder="Search State..."
+              className="w-[332px] h-[32px]"
+            />
 
             {/* Action Buttons */}
             <div className="flex gap-4 ">

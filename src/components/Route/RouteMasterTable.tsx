@@ -6,13 +6,12 @@ import CustomSwitch from "../utilis/CustomSwitch";
 import CustomizedCheckbox from "../utilis/CustomCheckbox";
 import CustomAlert from "../utilis/CustomAlert";
 import { useRoute } from "../../context/RouteContext";
-import { InputAdornment } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import CustomPagination from "../utilis/Pagination";
 import NewRouteModal from "./NewRouteModal";
 import DeleteRouteModal from "./DeleteRouteModal";
 import EditRouteModal from "./EditRouteModal";
-const ItemGroupTable: React.FC = () => {
+import SearchBar from "../utilis/SearchBax";
+const RouteMasterTable: React.FC = () => {
   const { routeData, deleteRoute,editRoute,deleteChecked } = useRoute();
   
   const [openModal, setOpenModal] = useState(false);
@@ -24,14 +23,27 @@ const ItemGroupTable: React.FC = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10); // Number of items per page
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (value: string) => {
+    setSearchTerm(value.toLowerCase());
+    setCurrentPage(1);
+  };
+
+  const filteredData = routeData.filter(
+    (item: any) =>
+      item.name.toLowerCase().includes(searchTerm) || 
+      item.shortname.toLowerCase().includes(searchTerm) 
+  );
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = routeData.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
 
   useEffect(() => { 
-  }, []);
+    setSelectAll(false);
+  }, [currentPage, itemsPerPage, searchTerm]);
 
 // Handle individual checkbox change
 const handleRowCheckboxChange = (srl: number, checked: boolean) => {
@@ -121,7 +133,7 @@ const handleDeleteSelected = () => {
     const updatedTax = routeData.find((item :any) => item.srl === srl);
     if (updatedTax) {
       editRoute({ ...updatedTax, active });
-      CustomAlert({ type: "success", message: `${updatedTax.name} updated successfully.` });
+      // CustomAlert({ type: "success", message: `${updatedTax.name} updated successfully.` });
     }
   };
 
@@ -136,17 +148,11 @@ const handleDeleteSelected = () => {
           <p className="font-semibold text-lg">Route Master</p>
           <div className="flex items-center gap-4">
             {/* Search Bar */}
-            <div className="flex items-center border border-gray-300 rounded-md w-[332px] h-[32px]">
-              {/* Search Icon */}
-              <InputAdornment position="start" className="p-2">
-                <SearchIcon />
-              </InputAdornment>
-              <input
-                type="text"
-                placeholder="Search..."
-                className=" w-full border-none outline-none rounded-md"
-              />
-            </div>
+            <SearchBar
+            onSearch={handleSearch}
+            placeholder="Search Route..."
+            className="w-[332px] h-[32px]"
+          />
 
             {/* Action Buttons */}
             <div className="flex gap-4 ">
@@ -254,4 +260,4 @@ const handleDeleteSelected = () => {
   );
 };
 
-export default ItemGroupTable;
+export default RouteMasterTable;

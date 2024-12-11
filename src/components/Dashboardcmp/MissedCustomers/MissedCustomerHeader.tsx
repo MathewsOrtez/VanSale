@@ -2,23 +2,21 @@ import { InputAdornment } from "@mui/material";
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import SearchIcon from "../../../assets/SearchIcon.png";
-import CustomerCoveredTable from "./CustomerCoveredTable";
-import { useCustomerCoveredContext } from "../../../context/CustomerCoveredContext";
-const CustomerCoveredHeader: React.FC = () => {
+import SearchIcon from "@mui/icons-material/Search";
+import MissedCustomerTable from "./MissedCustomerTable";
+import { useMissedCustomerContext } from "../../../context/MissedCustomersContext";
+const MissedCustomerHeader: React.FC = () => {
   const navigate = useNavigate();
-  const { customerCoveredData } = useCustomerCoveredContext();
+  const { missedCustomerData } = useMissedCustomerContext();
   const [searchQuery, setSearchQuery] = useState("");
   // Row Click Route
   const handleRowClick = (type: string, id: number) => {
-    if (type === "outlet") {
-      navigate(`/customercoveredoutlet/${id}`);
-    } else if (type === "van") {
-      navigate(`/customercoveredvan/${id}`);
+    if (type === "van") {
+      navigate(`/missedcustomersvan/${id}`);
     }
   };
 //  Filter data based on search query
- const filteredData = customerCoveredData.filter((entry) => {
+ const filteredData = missedCustomerData.filter((entry) => {
   const query = searchQuery.toLowerCase();
   return (
     entry.name.toLowerCase().includes(query) 
@@ -30,12 +28,12 @@ const CustomerCoveredHeader: React.FC = () => {
       <div className="flex justify-between items-center px-4 py-2 my-4 gap-4">
         <div className="flex flex-col gap-5 ">
           <div>
-            <h1 className="text-xl font-semibold">Customers Covered</h1>
+            <h1 className="text-xl font-semibold">Missed Customers</h1>
           </div>
-          <div className="flex items-center border hover:border-gray-600 rounded-md ">
+          <div className="flex items-center border border-gray-600 rounded-md ">
             {/* Search Icon */}
             <InputAdornment position="start" className="p-2">
-              <img src={SearchIcon} alt="Search"  />
+              <SearchIcon />
             </InputAdornment>
             <input
               type="text"
@@ -61,7 +59,7 @@ const CustomerCoveredHeader: React.FC = () => {
       </div>
       {/* Outlet Table */}
       <div>
-        <CustomerCoveredTable
+        <MissedCustomerTable
           data={filteredData}
           onRowClick={handleRowClick}
         />
@@ -70,4 +68,4 @@ const CustomerCoveredHeader: React.FC = () => {
   );
 };
 
-export default CustomerCoveredHeader;
+export default MissedCustomerHeader;

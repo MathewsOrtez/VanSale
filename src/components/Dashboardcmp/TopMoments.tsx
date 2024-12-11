@@ -37,13 +37,13 @@ const TopMoments: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center w-[350px] h-[843px] px-4 py-4 shadow-xl">
+      <div className="flex flex-col justify-center w-[350px] h-[843px] px-4  shadow-xl text-sm">
         <div>
           {Headeritems.map((item, index) => {
             return (
               <div key={index}>
-                <p className="text-xl font-semibold">{item.header}</p>
-                <p className="font-thin italic text-sm">{item.label}</p>
+                <p className="text-lg font-semibold my-2">{item.header}</p>
+                <p className="font-thin italic text-sm text-[#7a7a7a]">{item.label}</p>
               </div>
             );
           })}
@@ -55,21 +55,21 @@ const TopMoments: React.FC = () => {
           <div className="flex flex-col justify-center   bg-[#fafafa] p-2 rounded-md gap-4 border">
             <div className="flex justify-between ">
               <p className="font-semibold">Route</p>
-              <p className="text-sm text-gray-400">12/08/2024</p>
+              <p className="text-xs text-gray-400">12/08/2024</p>
             </div>
             <div className="flex justify-between">
-              <p className="text-gray-600">Bill - 22</p>
-              <p className="text-[#efa72c]">₹5454.00</p>
+              <p className="text-gray-600 font-semibold">Bill - 22</p>
+              <p className="text-[#efa72c] font-semibold">₹5454.00</p>
             </div>
           </div>
           <div className="flex flex-col justify-center bg-[#fafafa] p-2 rounded-md gap-4 border">
             <div className="flex justify-between">
               <p className="font-semibold">Route</p>
-              <p className="text-sm text-gray-400">12/08/2024</p>
+              <p className="text-xs text-gray-400">12/08/2024</p>
             </div>
             <div className="flex justify-between">
-              <p className="text-gray-600">Bill - 69</p>
-              <p className="text-[#efa72c]">₹15454.00</p>
+              <p className="text-gray-600 font-semibold">Bill - 69</p>
+              <p className="text-[#efa72c] font-semibold">₹15454.00</p>
             </div>
           </div>
         </div>
@@ -85,9 +85,9 @@ const TopMoments: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    className="flex justify-between items-center p-3 bg-white border rounded-md"
+                    className="flex justify-between text-xs items-center p-3 bg-white border rounded-md"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1">
                       <div>
                         <img
                           src={item.badge}
@@ -95,7 +95,7 @@ const TopMoments: React.FC = () => {
                           className="w-8 h-8 object-contain"
                         />
                       </div>
-                      <div className="italic">{item.item}</div>
+                      <div className="italic font-thin ">{item.item}</div>
                     </div>
                     <div>{item.count}</div>
                   </div>

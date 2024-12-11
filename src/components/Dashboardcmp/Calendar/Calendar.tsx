@@ -7,24 +7,25 @@ const CalendarPopup: React.FC<{ onClose: () => void; onApply: (date: Date) => vo
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   return (
-    <div className=" bg-white shadow-lg rounded-lg p-4">
+    <div className=" bg-white shadow-lg rounded-lg p-4 w-[20rem] mx-4 border">
       {/* Calendar */}
       <Calendar
         value={selectedDate}
-        onChange={(date) => setSelectedDate(date as Date)}
+        onChange={(date) => setSelectedDate(date as Date) 
+        }
       />
 
       {/* Buttons */}
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex justify-end gap-5 items-center mt-4">
         <button
           onClick={onClose}
-          className="border border-gray-300 px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+          className="border border-gray-800 px-4 py-1 text-sm rounded-md text-gray-600 hover:bg-gray-100"
         >
           Cancel
         </button>
         <button
           onClick={() => selectedDate && onApply(selectedDate)}
-          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
+          className="bg-black text-white px-4 py-1 text-sm rounded-md hover:bg-gray-800"
         >
           Apply
         </button>

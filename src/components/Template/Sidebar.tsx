@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { MdDashboard } from "react-icons/md";
-import { BsJournalPlus } from "react-icons/bs";
-import { TbReportMoney } from "react-icons/tb";
+import { BsFileEarmarkPlus } from "react-icons/bs";
+import { LuFileClock } from "react-icons/lu";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { CiSettings } from "react-icons/ci";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import planDetailsImg from "../../assets/plan_details_photo.png";
-
+import { IoSettingsOutline } from "react-icons/io5";
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>(
@@ -22,12 +22,12 @@ const Sidebar: React.FC = () => {
   const menuItems = [
     {
       label: "Dashboard",
-      icon: <MdDashboard className="w-7 h-7" />,
+      icon: <MdDashboard className="w-6 h-6" />,
       link: "/",
     },
     {
-      label: "Master",
-      icon: <BsJournalPlus className="w-7 h-7" />,
+      label: "Masters",
+      icon: <BsFileEarmarkPlus className="w-6 h-6" />,
       dropdown: [
         { label: "Outlet/Van", link: "/" },
         { label: "Tax", link: "/taxmaster" },
@@ -37,13 +37,13 @@ const Sidebar: React.FC = () => {
         { label: "State", link: "/statemaster" },
         { label: "Branch", link: "/branchmaster" },
         { label: "Customer", link: "/" },
-        { label: "Route", link: "/masterroute" },
+        { label: "Route", link: "/routemaster" },
         { label: "Sundry Charges", link: "/" },
       ],
     },
     {
       label: "Transaction",
-      icon: <TbReportMoney className="w-7 h-7" />,
+      icon: <LuFileClock className="w-6 h-6" />,
       dropdown: [
         { label: "Sales Ordering", link: "/" },
         { label: "Sales Invoice", link: "/" },
@@ -54,7 +54,7 @@ const Sidebar: React.FC = () => {
     },
     {
       label: "User Management",
-      icon: <RiUserSettingsLine className="w-7 h-7" />,
+      icon: <RiUserSettingsLine className="w-6 h-6" />,
       dropdown: [
         { label: "User Creation", link: "/" },
         { label: "User Rights", link: "/" },
@@ -62,7 +62,7 @@ const Sidebar: React.FC = () => {
     },
     {
       label: "Settings",
-      icon: <CiSettings className="w-7 h-7" />,
+      icon: <IoSettingsOutline className="w-6 h-6" />,
       dropdown: [
         { label: "User-Van Linking", link: "/" },
         { label: "Van-Route Linking", link: "/" },
@@ -84,10 +84,11 @@ const Sidebar: React.FC = () => {
   const handleNavigate = (link: string) => {
     setSelectedRoute(link);
     navigate(link);
+    setOpenDropdowns({});
   };
 
   return (
-    <div className="bg-[#25add7] text-[#F9F7F6] w-[255px] h-[842px] flex flex-col min-h-full font-thin py-4">
+    <div className="bg-[#25add7] text-[#F9F7F6] w-[255px] h-full font-thin flex flex-col py-4">
       <div className="flex flex-col relative ">
         {menuItems.map((item, index) => (
           <div key={index} className="flex flex-col relative ">
@@ -123,7 +124,7 @@ const Sidebar: React.FC = () => {
 
             {/* Dropdown Menu */}
             {item.dropdown && openDropdowns[item.label] && (
-              <div className={`mx-4  absolute   top-12 z-10 w-[215px]  flex flex-col justify-start items-start gap-2 bg-white text-black rounded-md p-2 animate-flip-down animate-once`}>
+              <div className={`mx-4  absolute   top-12 z-10 w-[217px]  flex flex-col justify-start items-start gap-2 bg-white text-[#434343] rounded-md p-2 animate-flip-down animate-once`}>
                 {item.dropdown.map((subItem, subIndex) => (
                   <div
                     key={subIndex}
@@ -139,11 +140,11 @@ const Sidebar: React.FC = () => {
         ))}
       </div>
 
-      <div className="w-[215px] h-[249px] mx-auto mt-48 bg-[#00648a] text-xs rounded-md">
+      <div className="w-[210px] h-[249px] mx-auto mt-6 bg-[#00648a] text-xs rounded-md">
         {planDetails.map((item, index) => (
           <div key={index} className="flex-col justify-center gap-2 px-4 py-4">
-            <p className="font-bold">Plan Details</p>
-            <p className="font-thin">{item}</p>
+            <p className="text-base font-normal">Plan Details</p>
+            <p className="font-thin text-xs">{item}</p>
 
             <div className="flex justify-center my-2">
               <img src={planDetailsImg} alt="Plan details" />

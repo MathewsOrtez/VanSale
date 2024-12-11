@@ -29,7 +29,7 @@ const DashboardHeader: React.FC = () => {
         </div>
         <div>
           <button
-            className="flex items-center gap-2 border p-1 px-6 rounded-md border-blue-200"
+            className="flex items-center gap-2 border text-[#909090] text-sm p-1 px-6 rounded-md border-blue-200"
             onClick={() => setShowCalendar(true)}
           >
             <img src={calendaricon} alt="Calendar Icon" />

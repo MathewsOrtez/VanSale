@@ -1,13 +1,13 @@
 import React from "react";
-import Uparrow from "../../assets/uparrow.png";
-import Downarrow from "../../assets/downarrow.png";
+import Uparrow from "../../assets/UpArrow.png";
+import Downarrow from "../../assets/DownArrow.png";
 import { useNavigate } from "react-router-dom";
 
 // Define interface for props passed to StatCard
 interface StatCardProps {
   title: string;
   value: string | number;
-  description?: string;
+  description?: Array<string>;
   amount?: string;
   color: string;
   trendIcon?: "up" | "down";
@@ -27,37 +27,28 @@ const StatCard: React.FC<StatCardProps> = ({
   const navigate = useNavigate();
   return (
     <div
-      className={`rounded-2xl border  border-${color} p-4  flex flex-col justify-between gap-3  hover:cursor-pointer`}
-      style={{ minWidth: "100px", height: "91px", backgroundColor: color }}
-      onClick={() => navigate(`${link}`)}
+      className="rounded-2xl p-4 flex flex-col justify-between gap-2 cursor-pointer border"
+      style={{ backgroundColor: color, minWidth: "150px", height: "100px" }}
+      onClick={() => navigate(link)}
     >
-      <div className="flex justify-between items-center  text-gray-600">
+      <div className="flex justify-between items-center text-gray-600">
         <span className="text-sm font-medium">{title}</span>
         <span className="text-xl font-semibold">{value}</span>
       </div>
       {description && (
-        <div className="text-xs text-gray-900 mt-1 text-center">
-          {description}
+        <div className="text-xs text-gray-500 mt-1 flex justify-between">
+          {description.map((item, index) => (
+            <span key={index}>{item}</span>
+          ))}
         </div>
       )}
       {amount && (
-        <div className="flex justify-center items-center gap-4 ">
+        <div className="flex items-center gap-2 justify-end">
           {trendIcon && (
-            <span
-              className={`${
-                trendIcon === "up" ? (
-                  <img src={Uparrow} />
-                ) : (
-                  <img src={Downarrow} />
-                )
-              } text-sm`}
-            >
-              {trendIcon === "up" ? (
-                <img src={Uparrow} />
-              ) : (
-                <img src={Downarrow} />
-              )}
-            </span>
+            <img
+              src={trendIcon === "up" ? Uparrow : Downarrow}
+              alt={trendIcon}
+            />
           )}
           <span className="font-semibold text-lg">{amount}</span>
         </div>
@@ -70,7 +61,7 @@ const StatCard: React.FC<StatCardProps> = ({
 interface Stat {
   title: string;
   value: string | number;
-  description?: string;
+  description?: Array<string>;
   amount?: string;
   color: string;
   trendIcon?: "up" | "down";
@@ -78,7 +69,6 @@ interface Stat {
 }
 
 const DashboardStats: React.FC = () => {
-  // Explicitly define the type of the stats array
   const stats: Stat[] = [
     {
       title: "Outlet/Van",
@@ -89,7 +79,7 @@ const DashboardStats: React.FC = () => {
     {
       title: "Customers Covered",
       value: 78,
-      description: "Van 40   Outlet 30   Both 08",
+      description: ["Van 40", "Outlet 30", "Both 08"],
       color: "#d3f7ed",
       link: "/customercovered",
     },
@@ -126,8 +116,7 @@ const DashboardStats: React.FC = () => {
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-4 p-4 ">
-      {/* Explicitly pass the props */}
+    <div className="grid grid-cols-3 gap-4 p-4">
       {stats.map((stat, index) => (
         <StatCard key={index} {...stat} />
       ))}

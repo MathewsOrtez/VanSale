@@ -12,6 +12,7 @@ import CustomPagination from "../utilis/Pagination";
 import BranchMasterAddNew from "./BranchMasterAddNew";
 import DeleteBranchMasterModal from "./DeleteBranchMasterModal";
 import EditBranchMasterModal from "./EditBranchMasterModal";
+import SearchBar from "../utilis/SearchBax";
 const BranchMasterTable: React.FC = () => {
   const { deleteBranch, editBranch, branchData, deleteChecked } = useBranch();
   const [openModal, setOpenModal] = useState(false);
@@ -23,10 +24,26 @@ const BranchMasterTable: React.FC = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState("");
 
+  // Search Fuction
+  const handleSearch = (value: string) => {
+    setSearchTerm(value.toLowerCase());
+    setCurrentPage(1);
+  };
+//  Search FilterData
+  const filteredData = branchData.filter(
+    (item: any) =>
+      item.name.toLowerCase().includes(searchTerm) ||
+      item.shortname.toLowerCase().includes(searchTerm) ||
+      item.phone.toLowerCase().includes(searchTerm) ||
+      item.email.toLowerCase().includes(searchTerm) ||
+      item.state.toLowerCase().includes(searchTerm)
+  );
+  
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = branchData.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   useEffect(() => {}, []);
 
@@ -184,17 +201,11 @@ const BranchMasterTable: React.FC = () => {
           <p className="font-semibold text-lg">Branch Master</p>
           <div className="flex items-center gap-4">
             {/* Search Bar */}
-            <div className="flex items-center border border-gray-300 rounded-md w-[332px] h-[32px]">
-              {/* Search Icon */}
-              <InputAdornment position="start" className="p-2">
-                <SearchIcon />
-              </InputAdornment>
-              <input
-                type="text"
-                placeholder="Search..."
-                className=" w-full border-none outline-none rounded-md"
-              />
-            </div>
+            <SearchBar
+            onSearch={handleSearch}
+            placeholder="Search Branch..."
+            className="w-[332px] h-[32px]"
+          />
 
             {/* Action Buttons */}
             <div className="flex gap-4 ">

@@ -8,96 +8,24 @@ interface CustomerData {
   customers: { srl: number; customername?: string; route?: string; starttime?: string; endtime?: string; customercount ?: number; routecustomer?: Array<{ srl: number; customername: string }>  }[];
 }
 
-interface CustomerContextType {
-  customerCoveredData: CustomerData[];
-  setCustomerCoveredData: React.Dispatch<React.SetStateAction<CustomerData[]>>;
+interface MissedCustomerContextType {
+  missedCustomerData: CustomerData[];
+  setMissedCustomerData: React.Dispatch<React.SetStateAction<CustomerData[]>>;
 }
 
-const CustomerCoveredContext = createContext<CustomerContextType | undefined>(undefined);
+const MissedCustomerContext = createContext<MissedCustomerContextType | undefined>(undefined);
 
-export const useCustomerCoveredContext = () => {
-  const context = useContext(CustomerCoveredContext);
+export const useMissedCustomerContext = () => {
+  const context = useContext(MissedCustomerContext);
   if (!context) {
-    throw new Error("useCustomerCoveredContext must be used within a CustomerCoveredProvider");
+    throw new Error("useMissedCustomerContext must be used within a MissedCustomerProvider");
   }
   return context;
 };
 
-export const CustomerCoveredProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [customerCoveredData, setCustomerCoveredData] = useState<CustomerData[]>([
-    {
-        srl: 1,
-        name: "Outlet 1",
-        type: "outlet",
-        customercount: 16,
-        customers: [
-          { 
-            srl: 1,
-            customername: "K&K Company",
-          },
-          {
-            srl: 2,
-            customername: "C Shop",
-          },
-          {
-            srl: 3,
-            customername: "R Shop",
-          },
-          {
-            srl: 4,
-            customername: "M Shop",
-          },
-          {
-            srl: 5,
-            customername: "T Shop",
-          },
-          {
-            srl: 6,
-            customername: "Marayoor Groups & Limits",
-          },
-          {
-            srl: 7,
-            customername: "Vivek Shop",
-          },
-        ],
-      },
-      {
-        srl: 2,
-        name: "Outlet 2",
-        type: "outlet",
-        customercount: 16,
-        customers: [
-          {
-            srl: 1,
-            customername: "Visigrow Company",
-          },
-          {
-            srl: 2,
-            customername: "Ant Shop",
-          },
-          {
-            srl: 3,
-            customername: "Uasrt Shop",
-          },
-          {
-            srl: 4,
-            customername: "Bar Shop",
-          },
-          {
-            srl: 5,
-            customername: "Tony&Guy Shop",
-          },
-          {
-            srl: 6,
-            customername: "Sanu Textiles",
-          },
-          {
-            srl: 7,
-            customername: "Nayanshop",
-          },
-        ],
-      },
-      { srl: 3, name: "Van 1", type: "van", customercount: 28, customers: [
+export const MissedCustomerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [missedCustomerData, setMissedCustomerData] = useState<CustomerData[]>([
+      { srl: 1, name: "Van 1", type: "van", customercount: 28, customers: [
           {
             srl: 1,
             route:"Kakkand",
@@ -168,7 +96,7 @@ export const CustomerCoveredProvider: React.FC<{ children: React.ReactNode }> = 
             ]
           }
         ] },
-      { srl: 4, name: "Van 2", type: "van", customercount: 16, customers: [
+      { srl: 2, name: "Van 2", type: "van", customercount: 16, customers: [
           {
             srl: 1,
             route:"Kochi",
@@ -208,9 +136,8 @@ export const CustomerCoveredProvider: React.FC<{ children: React.ReactNode }> = 
             customercount : 30,
           }
         ] },
-      { srl: 5, name: "Van 3", type: "van", customercount: 30, customers: [
+      { srl: 3, name: "Van 3", type: "van", customercount: 30, customers: [
           {
-          
             srl: 1,
             route:"Edappally",
             starttime: "10:10am",
@@ -242,9 +169,9 @@ export const CustomerCoveredProvider: React.FC<{ children: React.ReactNode }> = 
         ]  },
   ]);
 
-  return (
-    <CustomerCoveredContext.Provider value={{ customerCoveredData, setCustomerCoveredData }}>
+  return (      
+    <MissedCustomerContext.Provider value={{ missedCustomerData, setMissedCustomerData }}>
       {children}
-    </CustomerCoveredContext.Provider>
+    </MissedCustomerContext.Provider>
   );
 };

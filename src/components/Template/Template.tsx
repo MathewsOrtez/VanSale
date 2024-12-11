@@ -11,10 +11,10 @@ const Template: React.FC = () => {
       </div>
       <div className="flex">
         <div className="flex-col">
-        <Sidebar />
+          <Sidebar />
         </div>
-        <main className="w-full bg-[#fafafa]">
-         <Outlet /> 
+        <main className="w-full bg-[#fafafa] ">
+          <Outlet />
         </main>
       </div>
     </div>

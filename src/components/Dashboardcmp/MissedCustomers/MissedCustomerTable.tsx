@@ -6,7 +6,7 @@ interface CustomerCoveredTableProps {
   onRowClick: (type: string, name: number) => void;
 }
 
-const CustomerCoveredTable: React.FC<CustomerCoveredTableProps> = ({data, onRowClick}) => {
+const MissedCustomerTable: React.FC<CustomerCoveredTableProps> = ({data, onRowClick}) => {
     return (
         <>
         <div className="px-4">
@@ -29,7 +29,7 @@ const CustomerCoveredTable: React.FC<CustomerCoveredTableProps> = ({data, onRowC
             <tr
               key={row.srl}
               className="text-gray-800 bg-white border-b hover:bg-gray-50 hover:border-gray-200 border-gray-100 text-start cursor-pointer"
-              onClick={() => onRowClick(row.type, row.srl  )}
+              onClick={() => onRowClick(row.type, row.srl )}
             >
               <td className="p-3 ">{row.srl}</td>
               <td className="p-3 flex items-center  justify-start gap-4"><img src={row.type === "outlet" ? OutletImage : VanImage} alt="" />{row.name}</td>
@@ -44,4 +44,4 @@ const CustomerCoveredTable: React.FC<CustomerCoveredTableProps> = ({data, onRowC
     );
 };
 
-export default CustomerCoveredTable;
+export default MissedCustomerTable;
