@@ -52,7 +52,7 @@ const BranchMasterAddNew: React.FC<BranchMasterNewModalProps> = ({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0  bg-opacity-50 flex justify-center items-center z-50 animate-jump-in bg-slate-50">
+    <div className="fixed inset-0  bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75">
       <div className="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-2xl w-[805px] h-[500px]">
         {/* Modal Header */}
         <div className="flex justify-between items-center">
@@ -172,8 +172,8 @@ const BranchMasterAddNew: React.FC<BranchMasterNewModalProps> = ({
               className="w-full border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none"
             >
               {stateOptionsData.map((option: { value: string; label: string }) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+                <option key={option?.value} value={option?.value}>
+                  {option?.label}
                 </option>
               ))}
             </select>

@@ -2,7 +2,7 @@ import { InputAdornment } from "@mui/material";
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
+import SearchIcon from "../../../assets/SearchIcon.png";
 import MissedCustomerTable from "./MissedCustomerTable";
 import { useMissedCustomerContext } from "../../../context/MissedCustomersContext";
 const MissedCustomerHeader: React.FC = () => {
@@ -30,10 +30,10 @@ const MissedCustomerHeader: React.FC = () => {
           <div>
             <h1 className="text-xl font-semibold">Missed Customers</h1>
           </div>
-          <div className="flex items-center border border-gray-600 rounded-md ">
+          <div className="flex items-center border hover:border-gray-600 rounded-md " style={{backgroundColor:"white"}}>
             {/* Search Icon */}
-            <InputAdornment position="start" className="p-2">
-              <SearchIcon />
+            <InputAdornment position="start" className="p-2"  >
+              <img src={SearchIcon} alt="Search Icon" />
             </InputAdornment>
             <input
               type="text"

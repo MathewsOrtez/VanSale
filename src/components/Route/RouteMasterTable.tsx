@@ -10,7 +10,7 @@ import CustomPagination from "../utilis/Pagination";
 import NewRouteModal from "./NewRouteModal";
 import DeleteRouteModal from "./DeleteRouteModal";
 import EditRouteModal from "./EditRouteModal";
-import SearchBar from "../utilis/SearchBax";
+import SearchBar from "../utilis/SearchBox";
 const RouteMasterTable: React.FC = () => {
   const { routeData, deleteRoute,editRoute,deleteChecked } = useRoute();
   
@@ -203,30 +203,30 @@ const handleDeleteSelected = () => {
                 <CustomizedCheckbox 
                 checked={selectedRows.includes(item.srl)}
                 onChange={(e) =>
-                  handleRowCheckboxChange(item.srl, e.target.checked)}/>
+                  handleRowCheckboxChange(item?.srl, e.target.checked)}/>
               </td>
-              <td className="text-start py-2" onClick={()=> handleClickOpen(item.srl,item.name,item.shortname,item.active)}>{item.srl}</td>
-              <td className="text-start py-2" onClick={()=> handleClickOpen(item.srl,item.name,item.shortname,item.active)}>{item.name}</td>
-              <td className="text-start py-2" onClick={()=> handleClickOpen(item.srl,item.name,item.shortname,item.active)}>{item.shortname}</td>
+              <td className="text-start py-2" onClick={()=> handleClickOpen(item?.srl,item?.name,item?.shortname,item?.active)}>{item?.srl}</td>
+              <td className="text-start py-2" onClick={()=> handleClickOpen(item?.srl,item?.name,item?.shortname,item?.active)}>{item?.name}</td>
+              <td className="text-start py-2" onClick={()=> handleClickOpen(item?.srl,item?.name,item?.shortname,item?.active)}>{item?.shortname}</td>
               <td className="text-center py-2">
                 <CustomSwitch 
-                checked={item.active}
-                onChange={(e, checked) => handleSwitchChange(item.srl, checked)}/>
+                checked={item?.active}
+                onChange={(e, checked) => handleSwitchChange(item?.srl, checked)}/>
               </td>
               <td className=" text-center py-2">
                 <button
-                  aria-label={`Edit ${item.name}`}
+                  aria-label={`Edit ${item?.name}`}
                   className="hover:text-blue-500 transition-colors"
-                  onClick={()=> handleEditClick(item.srl,item.name,item.shortname,item.active)}
+                  onClick={()=> handleEditClick(item?.srl,item?.name,item?.shortname,item?.active)}
                 >
                   <img src={EditIcon}/>
                 </button>
               </td>
               <td className=" text-center py-2">
                 <button
-                  aria-label={`Delete ${item.name}`}
+                  aria-label={`Delete ${item?.name}`}
                   className="hover:text-red-700 transition-colors"
-                  onClick={()=> handleClickOpen(item.srl,item.name,item.shortname,item.active)}
+                  onClick={()=> handleClickOpen(item?.srl,item?.name,item?.shortname,item?.active)}
                 >
                    <img src={DataDeleteIcon}/>
                 </button>

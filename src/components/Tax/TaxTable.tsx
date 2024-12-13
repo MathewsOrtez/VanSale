@@ -10,7 +10,8 @@ import EditTaxModal from "./EditTaxModal";
 import { useTax } from "../../context/TaxContext";
 import TaxAddNew from "./TaxAddNew";
 import CustomPagination from "../utilis/Pagination";
-import SearchBar from "../utilis/SearchBax";
+import SearchBar from "../utilis/SearchBox";
+import Loader from "../utilis/Loader";
 const TaxTable: React.FC = () => {
   const { taxData, editTax, deleteTax, deleteChecked } = useTax();
   const [openModal, setOpenModal] = useState(false);
@@ -23,7 +24,6 @@ const TaxTable: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10); // Number of items per page
   const [searchTerm, setSearchTerm] = useState("");
-
   const handleSearch = (value: string) => {
     setSearchTerm(value.toLowerCase());
     setCurrentPage(1);
@@ -149,10 +149,6 @@ const TaxTable: React.FC = () => {
     const updatedTax = taxData.find((item: any) => item.srl === srl);
     if (updatedTax) {
       editTax({ ...updatedTax, active });
-      CustomAlert({
-        type: "success",
-        message: `${updatedTax.name} updated successfully.`,
-      });
     }
   };
 
@@ -229,8 +225,10 @@ const TaxTable: React.FC = () => {
               </th>
             </tr>
           </thead>
+          {/* Table Body */}
+          
           <tbody className="bg-white">
-            {currentData.length === 0 ? (
+            {currentData?.length === 0 ? (
               <tr>
                 <td
                   colSpan={8}
@@ -240,16 +238,16 @@ const TaxTable: React.FC = () => {
                 </td>
               </tr>
             ) : (
-              currentData.map((item: any, index: number) => (
+              currentData?.map((item: any, index: number) => (
                 <tr
                   key={index}
                   className="text-gray-800 text-sm border-b text-start cursor-pointer hover:bg-gray-50"
                 >
                   <td className="py-2">
                     <CustomizedCheckbox
-                      checked={selectedRows.includes(item.srl)}
+                      checked={selectedRows.includes(item?.srl)}
                       onChange={(e) =>
-                        handleRowCheckboxChange(item.srl, e.target.checked)
+                        handleRowCheckboxChange(item?.srl, e.target.checked)
                       }
                     />
                   </td>
@@ -257,59 +255,59 @@ const TaxTable: React.FC = () => {
                     className="py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active
                       )
                     }
                   >
-                    {item.srl}
+                    {item?.srl}
                   </td>
                   <td
                     className="py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active
                       )
                     }
                   >
-                    {item.name}
+                    {item?.name}
                   </td>
                   <td
                     className="py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active
                       )
                     }
                   >
-                    {item.shortname}
+                    {item?.shortname}
                   </td>
                   <td className="py-2 text-center">
                     <CustomSwitch
-                      checked={item.active}
+                      checked={item?.active}
                       onChange={(e, checked) =>
-                        handleSwitchChange(item.srl, checked)
+                        handleSwitchChange(item?.srl, checked)
                       }
                     />
                   </td>
                   <td className="py-2 text-center">
                     <button
-                      aria-label={`Edit ${item.name}`}
+                      aria-label={`Edit ${item?.name}`}
                       className="hover:text-blue-500 transition-colors"
                       onClick={() =>
                         handleEditClick(
-                          item.srl,
-                          item.name,
-                          item.shortname,
-                          item.active
+                          item?.srl,
+                          item?.name,
+                          item?.shortname,
+                          item?.active
                         )
                       }
                     >
@@ -318,14 +316,14 @@ const TaxTable: React.FC = () => {
                   </td>
                   <td className="py-2 text-center">
                     <button
-                      aria-label={`Delete ${item.name}`}
+                      aria-label={`Delete ${item?.name}`}
                       className="hover:text-red-700 transition-colors"
                       onClick={() =>
                         handleClickOpen(
-                          item.srl,
-                          item.name,
-                          item.shortname,
-                          item.active
+                          item?.srl,
+                          item?.name,
+                          item?.shortname,
+                          item?.active
                         )
                       }
                     >

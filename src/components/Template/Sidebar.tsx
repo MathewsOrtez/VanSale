@@ -88,7 +88,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#25add7] text-[#F9F7F6] w-[255px] h-full font-thin flex flex-col py-4">
+    <div className="bg-[#25add7] text-[#F9F7F6] w-[255px] h-full font-thin flex flex-col py-4 shadow-xl">
       <div className="flex flex-col relative ">
         {menuItems.map((item, index) => (
           <div key={index} className="flex flex-col relative ">

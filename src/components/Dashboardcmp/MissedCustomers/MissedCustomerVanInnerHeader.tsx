@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { InputAdornment } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMissedCustomerContext } from "../../../context/MissedCustomersContext";
 import MissedCustomerVanInnerTable from "./MissedCustomerVanInnerTable";
-import SearchIcon from "@mui/icons-material/Search";
+import SearchIcon from "../../../assets/SearchIcon.png";
 const MissedCustomerVanInnerHeader: React.FC = () => {
+
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const { id, type, route } = useParams<{ id: string; type: string; route: string }>();
   const { missedCustomerData } = useMissedCustomerContext();
@@ -27,6 +29,11 @@ const MissedCustomerVanInnerHeader: React.FC = () => {
 
   console.log(tableData);
 
+  const filteredData = tableData.filter((row) =>
+    row.customername.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    row.srl.toString().includes(searchQuery)
+  );
+
   return (
     <>
       <div className="flex justify-between items-center px-4 py-2 my-4 gap-4">
@@ -34,13 +41,15 @@ const MissedCustomerVanInnerHeader: React.FC = () => {
           <div>
             <h1 className="text-xl font-semibold">Missed Customers</h1>
           </div>
-          <div className="flex items-center border border-gray-600 rounded-md">
+          <div className="flex items-center border hover:border-gray-600 rounded-md" style={{backgroundColor:"white"}}>
             <InputAdornment position="start" className="p-2">
-              <SearchIcon />
+              <img src={SearchIcon} alt="Search" />
             </InputAdornment>
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Search by customer name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="p-2 border-none outline-none rounded-md w-[332px] h-[32px]"
             />
           </div>
@@ -59,7 +68,7 @@ const MissedCustomerVanInnerHeader: React.FC = () => {
         </div>
       </div>
       <div>
-        <MissedCustomerVanInnerTable data={tableData} />
+        <MissedCustomerVanInnerTable data={filteredData} />
       </div>
     </>
   );

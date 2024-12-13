@@ -20,12 +20,18 @@
             </tr>
           </thead>
           <tbody>
-            {data.map((row, rowIndex) => (
-              row.customers?.map((customer) => (
-                <tr
-                  key={customer.srl}
-                  className="text-gray-800 bg-white border-b hover:bg-gray-50 hover:border-gray-200 border-gray-100 text-start cursor-pointer"
-                  onClick={() => onRowClick(row.type, customer.srl ,customer.route)}
+            {data.length === 0 || !data.some((row) => row.customers?.length) ? (
+              <tr>
+                <td colSpan={5} className="p-3 text-center text-gray-500 border">
+                  No data available
+                </td>
+              </tr>
+            ) : data.map((row, rowIndex) => (
+                row.customers?.map((customer) => (
+                  <tr
+                    key={customer.srl}
+                    className="text-gray-800 bg-white border-b hover:bg-gray-50 hover:border-gray-200 border-gray-100 text-start cursor-pointer"
+                    onClick={() => onRowClick(row.type, customer.srl ,customer.route)}
                 >
                   <td className="p-3">{customer.srl}</td>
                   <td className="p-3">{customer.route}</td>

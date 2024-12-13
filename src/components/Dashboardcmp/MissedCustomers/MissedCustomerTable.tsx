@@ -14,7 +14,7 @@ const MissedCustomerTable: React.FC<CustomerCoveredTableProps> = ({data, onRowCl
         <thead className="border border-gray-200 bg-white text-[#929292]">
           <tr >
           <th className="p-3  font-medium text-start" >Srl</th>
-          <th className="p-3  font-medium text-start" >Outlet/Van</th>
+          <th className="p-3  font-medium text-start" >Route</th>
           <th className="p-3  font-medium text-start" >Customer Count</th>
           </tr>
         </thead>

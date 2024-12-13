@@ -40,13 +40,13 @@ const CustomerCoveredVanHeader: React.FC = () => {
           <div>
             <h1 className="text-xl font-semibold">Customers Covered</h1>
           </div>
-          <div className="flex items-center border hover:border-gray-600 rounded-md">
+          <div className="flex items-center border hover:border-gray-600 rounded-md" style={{backgroundColor:"white"}}>
             <InputAdornment position="start" className="p-2">
               <img src={SearchIcon} alt="Search Icon" />
             </InputAdornment>
             <input
               type="text"
-              placeholder="Search by Route..."
+              placeholder="Search by route..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="p-2 border-none outline-none rounded-md w-[332px] h-[32px]"

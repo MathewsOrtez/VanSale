@@ -52,7 +52,7 @@ const DeleteTaxModal: React.FC<DeleteTaxModalProps> = ({
   };
 
   return (
-    <div className={`fixed inset-0 bg-opacity-50 flex justify-center items-center z-50 animate-jump-in bg-slate-50`}>
+    <div className={`fixed inset-0 bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75`}>
       <div className="bg-white p-6 rounded-2xl w-[30rem] border-2 border-gray-200 shadow-2xl">
         {/* Modal Header */}
         <div className="flex justify-between items-center">

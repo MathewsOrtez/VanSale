@@ -6,9 +6,9 @@ import Switch, { SwitchProps } from "@mui/material/Switch";
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
-  width: 38,
-  height: 21,
-  padding: 0,
+  width: 40,
+  height: 22,
+  padding: 4,
   display: "flex",
   "& .MuiSwitch-switchBase": {
     padding: 0,
@@ -28,8 +28,8 @@ const IOSSwitch = styled((props: SwitchProps) => (
   },
   "& .MuiSwitch-thumb": {
     boxSizing: "border-box",
-    width: 18,
-    height: 16,
+    width: 20,
+    height: 18,
     display: "flex",
     alignItems: "center",
     justifyContent: "center", 
@@ -53,6 +53,8 @@ const IOSSwitch = styled((props: SwitchProps) => (
       color: "#07D038",
       fontSize: "12px",
       fontWeight: "bold",
+      border: "1px solid #07D038",
+      borderRadius: "50%",
     },
   },
   "& .MuiSwitch-track": {

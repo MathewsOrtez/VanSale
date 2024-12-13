@@ -12,7 +12,7 @@ import CustomPagination from "../utilis/Pagination";
 import BranchMasterAddNew from "./BranchMasterAddNew";
 import DeleteBranchMasterModal from "./DeleteBranchMasterModal";
 import EditBranchMasterModal from "./EditBranchMasterModal";
-import SearchBar from "../utilis/SearchBax";
+import SearchBar from "../utilis/SearchBox";
 const BranchMasterTable: React.FC = () => {
   const { deleteBranch, editBranch, branchData, deleteChecked } = useBranch();
   const [openModal, setOpenModal] = useState(false);
@@ -28,17 +28,17 @@ const BranchMasterTable: React.FC = () => {
 
   // Search Fuction
   const handleSearch = (value: string) => {
-    setSearchTerm(value.toLowerCase());
+    setSearchTerm(value?.toLowerCase());
     setCurrentPage(1);
   };
 //  Search FilterData
   const filteredData = branchData.filter(
     (item: any) =>
-      item.name.toLowerCase().includes(searchTerm) ||
-      item.shortname.toLowerCase().includes(searchTerm) ||
-      item.phone.toLowerCase().includes(searchTerm) ||
-      item.email.toLowerCase().includes(searchTerm) ||
-      item.state.toLowerCase().includes(searchTerm)
+      item.name?.toLowerCase().includes(searchTerm) ||
+      item.shortname?.toLowerCase().includes(searchTerm) ||
+      item.phone?.toLowerCase().includes(searchTerm) ||
+      item.email?.toLowerCase().includes(searchTerm) ||
+      item.state?.toLowerCase().includes(searchTerm)
   );
   
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -180,10 +180,10 @@ const BranchMasterTable: React.FC = () => {
     const updatedTax = branchData.find((item: any) => item.srl === srl);
     if (updatedTax) {
       editBranch({ ...updatedTax, active });
-      CustomAlert({
-        type: "success",
-        message: `${updatedTax.name} updated successfully.`,
-      });
+      // CustomAlert({
+      //   type: "success",
+      //   message: `${updatedTax.name} updated successfully.`,
+      // });
     }
   };
 
@@ -270,7 +270,7 @@ const BranchMasterTable: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-white ">
-            {currentData.length === 0 ? (
+            {currentData?.length === 0 ? (
               <tr>
                 <td
                   colSpan={10}
@@ -280,7 +280,7 @@ const BranchMasterTable: React.FC = () => {
                 </td>
               </tr>
             ) : (
-              currentData.map((item: any, index: number) => (
+              currentData?.map((item: any, index: number) => (
                 <tr
                   key={index}
                   className="text-gray-800 text-sm  border-b border-gray-200 text-start cursor-pointer hover:bg-gray-50"
@@ -297,33 +297,33 @@ const BranchMasterTable: React.FC = () => {
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active,
-                        item.state,
-                        item.email,
-                        item.phone,
-                        item.gstnumber,
-                        item.shopadress
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active,
+                        item?.state,
+                        item?.email,
+                        item?.phone,
+                        item?.gstnumber,
+                        item?.shopadress
                       )
                     }
                   >
-                    {item.srl}
+                    {item?.srl}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active,
-                        item.state,
-                        item.email,
-                        item.phone,
-                        item.gstnumber,
-                        item.shopadress
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active,
+                        item?.state,
+                        item?.email,
+                        item?.phone,
+                        item?.gstnumber,
+                        item?.shopadress
                       )
                     }
                   >
@@ -333,15 +333,15 @@ const BranchMasterTable: React.FC = () => {
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active,
-                        item.state,
-                        item.email,
-                        item.phone,
-                        item.gstnumber,
-                        item.shopadress
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active,
+                        item?.state,
+                        item?.email,
+                        item?.phone,
+                        item?.gstnumber,
+                        item?.shopadress
                       )
                     }
                   >
@@ -351,15 +351,15 @@ const BranchMasterTable: React.FC = () => {
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active,
-                        item.state,
-                        item.email,
-                        item.phone,
-                        item.gstnumber,
-                        item.shopadress
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active,
+                        item?.state,
+                        item?.email,
+                        item?.phone,
+                        item?.gstnumber,
+                        item?.shopadress
                       )
                     }
                   >
@@ -369,15 +369,15 @@ const BranchMasterTable: React.FC = () => {
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active,
-                        item.state,
-                        item.email,
-                        item.phone,
-                        item.gstnumber,
-                        item.shopadress
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active,
+                        item?.state,
+                        item?.email,
+                        item?.phone,
+                        item?.gstnumber,
+                        item?.shopadress
                       )
                     }
                   >
@@ -387,15 +387,15 @@ const BranchMasterTable: React.FC = () => {
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active,
-                        item.state,
-                        item.email,
-                        item.phone,
-                        item.gstnumber,
-                        item.shopadress
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active,
+                        item?.state,
+                        item?.email,
+                        item?.phone,
+                        item?.gstnumber,
+                        item?.shopadress
                       )
                     }
                   >
@@ -405,7 +405,7 @@ const BranchMasterTable: React.FC = () => {
                     <CustomSwitch
                       checked={item.active}
                       onChange={(e, checked) =>
-                        handleSwitchChange(item.srl, checked)
+                        handleSwitchChange(item?.srl, checked)
                       }
                     />
                   </td>
@@ -415,15 +415,15 @@ const BranchMasterTable: React.FC = () => {
                       className="hover:text-blue-500 transition-colors"
                       onClick={() =>
                         handleEditClick(
-                          item.srl,
-                          item.name,
-                          item.shortname,
-                          item.active,
-                          item.state,
-                          item.email,
-                          item.phone,
-                          item.gstnumber,
-                          item.shopadress
+                          item?.srl,
+                          item?.name,
+                          item?.shortname,
+                          item?.active,
+                          item?.state,
+                          item?.email,
+                          item?.phone,
+                          item?.gstnumber,
+                          item?.shopadress
                         )
                       }
                     >
@@ -436,15 +436,15 @@ const BranchMasterTable: React.FC = () => {
                       className="hover:text-red-700 transition-colors"
                       onClick={() =>
                         handleClickOpen(
-                          item.srl,
-                          item.name,
-                          item.shortname,
-                          item.active,
-                          item.state,
-                          item.email,
-                          item.phone,
-                          item.gstnumber,
-                          item.shopadress
+                          item?.srl,
+                          item?.name,
+                          item?.shortname,
+                          item?.active,
+                          item?.state,
+                          item?.email,
+                          item?.phone,
+                          item?.gstnumber,
+                          item?.shopadress
                         )
                       }
                     >

@@ -10,7 +10,7 @@ import CustomPagination from "../utilis/Pagination";
 import StateMasterAddNew from "./StateMasterAddNew";
 import DeleteStateMasterModal from "./DeleteStateMasterModal";
 import EditStateMasterModal from "./EditStateMasterModal";
-import SearchBar from "../utilis/SearchBax";
+import SearchBar from "../utilis/SearchBox";
 const StateMasterTable: React.FC = () => {
   const { deleteState, editState, stateData, deleteChecked } = useStates();
   const [openModal, setOpenModal] = useState(false);
@@ -152,10 +152,10 @@ const StateMasterTable: React.FC = () => {
     const updatedTax = stateData.find((item: any) => item.srl === srl);
     if (updatedTax) {
       editState({ ...updatedTax, active });
-      CustomAlert({
-        type: "success",
-        message: `${updatedTax.name} updated successfully.`,
-      });
+      // CustomAlert({
+      //   type: "success",
+      //   message: `${updatedTax.name} updated successfully.`,
+      // });
     }
   };
 
@@ -236,7 +236,7 @@ const StateMasterTable: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-white ">
-            {currentData.length === 0 ? (
+            {currentData?.length === 0 ? (
               <tr>
                 <td
                   colSpan={8}
@@ -246,7 +246,7 @@ const StateMasterTable: React.FC = () => {
                 </td>
               </tr>
             ) : (
-              currentData.map((item: any, index: number) => (
+              currentData?.map((item: any, index: number) => (
                 <tr
                   key={index}
                   className="text-gray-800 text-sm  border-b border-gray-200 text-start cursor-pointer hover:bg-gray-50"
@@ -263,77 +263,77 @@ const StateMasterTable: React.FC = () => {
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active,
-                        item.statecode
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active,
+                        item?.statecode
                       )
                     }
                   >
-                    {item.srl}
+                    {item?.srl}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active,
-                        item.statecode
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active,
+                        item?.statecode
                       )
                     }
                   >
-                    {item.name}
+                    {item?.name}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active,
-                        item.statecode
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active,
+                        item?.statecode
                       )
                     }
                   >
-                    {item.shortname}
+                    {item?.shortname}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active,
-                        item.statecode
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active,
+                        item?.statecode
                       )
                     }
                   >
-                    {item.statecode}
+                    {item?.statecode}
                   </td>
                   <td className="text-center py-2">
                     <CustomSwitch
                       checked={item.active}
                       onChange={(e, checked) =>
-                        handleSwitchChange(item.srl, checked)
+                        handleSwitchChange(item?.srl, checked)
                       }
                     />
                   </td>
                   <td className=" text-center py-2">
                     <button
-                      aria-label={`Edit ${item.name}`}
+                      aria-label={`Edit ${item?.name}`}
                       className="hover:text-blue-500 transition-colors"
                       onClick={() =>
                         handleEditClick(
-                          item.srl,
-                          item.name,
-                          item.shortname,
-                          item.active,
-                          item.statecode
+                          item?.srl,
+                          item?.name,
+                          item?.shortname,
+                          item?.active,
+                          item?.statecode
                         )
                       }
                     >
@@ -342,15 +342,15 @@ const StateMasterTable: React.FC = () => {
                   </td>
                   <td className=" text-center py-2">
                     <button
-                      aria-label={`Delete ${item.name}`}
+                      aria-label={`Delete ${item?.name}`}
                       className="hover:text-red-700 transition-colors"
                       onClick={() =>
                         handleClickOpen(
-                          item.srl,
-                          item.name,
-                          item.shortname,
-                          item.active,
-                          item.statecode
+                          item?.srl,
+                          item?.name,
+                          item?.shortname,
+                          item?.active,
+                          item?.statecode
                         )
                       }
                     >

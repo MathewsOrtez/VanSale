@@ -12,7 +12,7 @@ import { InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ItemGroupAddNew from "./ItemGroupAddNew";
 import CustomPagination from "../utilis/Pagination";
-import SearchBar from "../utilis/SearchBax";
+import SearchBar from "../utilis/SearchBox";
 const ItemGroupTable: React.FC = () => {
   const { itemGroupData, editItemGroup, deleteItemGroup, deleteChecked } =
     useItemGroup();
@@ -152,10 +152,10 @@ const ItemGroupTable: React.FC = () => {
     const updatedTax = itemGroupData.find((item: any) => item.srl === srl);
     if (updatedTax) {
       editItemGroup({ ...updatedTax, active });
-      CustomAlert({
-        type: "success",
-        message: `${updatedTax.name} updated successfully.`,
-      });
+      // CustomAlert({
+      //   type: "success",
+      //   message: `${updatedTax.name} updated successfully.`,
+      // });
     }
   };
 
@@ -233,7 +233,7 @@ const ItemGroupTable: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {currentData.length === 0 ? (
+            {currentData?.length === 0 ? (
               <tr>
                 <td
                   colSpan={8}
@@ -243,7 +243,7 @@ const ItemGroupTable: React.FC = () => {
                 </td>
               </tr>
             ) : (
-              currentData.map((item: any, index: number) => (
+              currentData?.map((item: any, index: number) => (
                 <tr
                   key={index}
                   className="text-gray-800 text-sm border-b text-start cursor-pointer hover:bg-gray-50"
@@ -260,40 +260,40 @@ const ItemGroupTable: React.FC = () => {
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active
                       )
                     }
                   >
-                    {item.srl}
+                    {item?.srl}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active
                       )
                     }
                   >
-                    {item.name}
+                    {item?.name}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item.srl,
-                        item.name,
-                        item.shortname,
-                        item.active
+                        item?.srl,
+                        item?.name,
+                        item?.shortname,
+                        item?.active
                       )
                     }
                   >
-                    {item.shortname}
+                    {item?.shortname}
                   </td>
                   <td className="text-center py-2">
                     <CustomSwitch
@@ -309,10 +309,10 @@ const ItemGroupTable: React.FC = () => {
                       className="hover:text-blue-500 transition-colors"
                       onClick={() =>
                         handleEditClick(
-                          item.srl,
-                          item.name,
-                          item.shortname,
-                          item.active
+                          item?.srl,
+                          item?.name,
+                          item?.shortname,
+                          item?.active
                         )
                       }
                     >
@@ -325,10 +325,10 @@ const ItemGroupTable: React.FC = () => {
                       className="hover:text-red-700 transition-colors"
                       onClick={() =>
                         handleClickOpen(
-                          item.srl,
-                          item.name,
-                          item.shortname,
-                          item.active
+                          item?.srl,
+                          item?.name,
+                          item?.shortname,
+                          item?.active
                         )
                       }
                     >

@@ -41,7 +41,7 @@ const StateMasterAddNew: React.FC<StateMasterNewModalProps> = ({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0  bg-opacity-50 flex justify-center items-center z-50 animate-jump-in bg-slate-50">
+    <div className="fixed inset-0  bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75">
       <div className="bg-white p-6 rounded-2xl border-2 border-gray-200 shadow-2xl w-[784px] h-[285px]">
         {/* Modal Header */}
         <div className="flex justify-between items-center">

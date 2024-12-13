@@ -54,7 +54,7 @@ const EditBranchMasterModal: React.FC<{
   };
 
   return (
-    <div className="fixed inset-0  mx-auto bg-opacity-50 flex justify-center items-center z-50 animate-jump-in bg-slate-50">
+    <div className="fixed inset-0  mx-auto bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75">
       <div className="bg-white p-6 rounded-2xl w-[805px] h-[500px] border-2 border-gray-200 shadow-2xl">
         {/* Modal Header */}
         <div className="flex justify-between items-center">
@@ -174,8 +174,8 @@ const EditBranchMasterModal: React.FC<{
             >
               {/* Options for states */}
               {stateOptionsData.map((option: { value: string; label: string }) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+                <option key={option?.value} value={option?.value}>
+                  {option?.label}
                 </option>
               ))}
             </select>

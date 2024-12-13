@@ -37,7 +37,7 @@ const TopMoments: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center w-[350px] h-[843px] px-4  shadow-xl text-sm">
+      <div className="flex flex-col justify-center w-[330px] h-[843px] px-4  shadow-xl text-sm bg-white">
         <div>
           {Headeritems.map((item, index) => {
             return (

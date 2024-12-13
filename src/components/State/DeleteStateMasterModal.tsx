@@ -54,7 +54,7 @@ const DeleteStateMasterModal: React.FC<DeleteStateMasterModalProps> = ({
   };
 
   return (
-    <div className={`fixed inset-0 bg-opacity-50 flex justify-center items-center z-50 animate-jump-in `}>
+    <div className={`fixed inset-0 bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75`}>
       <div className="bg-white p-6 rounded-2xl w-[784px] h-[285px] border-2 border-gray-200 shadow-2xl">
         {/* Modal Header */}
         <div className="flex justify-between items-center">
