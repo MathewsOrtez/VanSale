@@ -33,19 +33,21 @@ const StatCard: React.FC<StatCardProps> = ({
       style={{ backgroundColor: color, minWidth: "150px", height: "100px" ,borderColor:bordercolor}}
       onClick={() => navigate(link)}
     >
-      <div className="flex justify-between items-center text-gray-600">
+      <div className="flex justify-between flex-wrap items-center text-gray-600">
         <span className="text-sm font-medium">{title}</span>
         <span className="text-xl font-semibold">{value}</span>
       </div>
       {description && (
         <div className="text-xs text-gray-500 mt-1 flex flex-wrap justify-between">
           {description.map((item, index) => (
-            <span key={index}>{item}</span>
-          ))}
+            <span key={index} className="flex flex-wrap ">
+              {item}
+            </span>
+          ))} 
         </div>
       )}
       {amount && (
-        <div className="flex items-center gap-2 justify-end">
+        <div className="flex items-center flex-wrap gap-2 justify-end">
           {trendIcon && (
             <img
               src={trendIcon === "up" ? Uparrow : Downarrow}
@@ -125,7 +127,7 @@ const DashboardStats: React.FC = () => {
   ];
 
   return (
-    <div className="grid lg:grid-cols-3 grid-cols-2  flex-wrap gap-4 p-4">
+    <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1  flex-wrap gap-4 p-4">
       {stats.map((stat, index) => (
         <StatCard key={index} {...stat} />
       ))}

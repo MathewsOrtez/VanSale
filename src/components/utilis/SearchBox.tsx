@@ -16,7 +16,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search..
   return (
     <div className={`flex items-center border border-gray-300 hover:border-gray-400 rounded-md ${className || ""}`} style={{backgroundColor:"white"}}>
       <InputAdornment position="start" className="px-2  py-2">
-        <img src={SearchIcon} alt="Search" className="w-5 h-4"/>
+        <img src={SearchIcon} alt="Search" className="w-5 h-4" />
       </InputAdornment>
       <input
         type="text"

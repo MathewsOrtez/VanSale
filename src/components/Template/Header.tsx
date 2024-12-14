@@ -5,7 +5,7 @@ const Header: React.FC = () => {
   // const Headeritem: string[] = ["Kakkanad", "Mathews Thomas"];
   return (
     <>
-      <div className="flex items-center justify-between px-4 py-2 shadow-lg w-white">
+      <div className="flex items-center justify-between px-4 py-2 shadow-sm w-white">
         <div className="flex items-center gap-2"> 
           <div>
             <img src={logo} />

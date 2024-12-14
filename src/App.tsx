@@ -18,6 +18,7 @@ import CustomerCoveredVanInner from "./pages/Dashboard/CustomerCovered/CustomerC
 import MissedCustomers from "./pages/Dashboard/MissedCustomers/MissedCustomers";
 import MissedCustomersVan from "./pages/Dashboard/MissedCustomers/MissedCustomersVan";
 import MissedCustomerVanInner from "./pages/Dashboard/MissedCustomers/MissedCustomersVanInner";
+import UserVanLinking from "./pages/Settings/UserVanLInking/UserVanLinking";
 function App() {
   return (
     <Router>
@@ -59,6 +60,10 @@ function App() {
           <Route path="/unbilledorders" element={<Upgradeplan />} />
           <Route path="/sales" element={<Upgradeplan />} />
           <Route path="/orders" element={<Upgradeplan />} />
+
+          {/* UserVanLinking */}
+          <Route path="/uservanlinking" element={<UserVanLinking />} />
+          
         </Route>
       </Routes>
     </Router>
