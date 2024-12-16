@@ -35,7 +35,7 @@ const CustomPagination: React.FC<{
       showLastButton
       onChange={onPageChange}
       renderItem={(item) => (
-        <PaginationItem sx={{border:1,borderColor: "#2080be",borderRadius: "10px",margin: "0 8px"}}
+        <PaginationItem sx={{border:1,borderColor: "#2080be",borderRadius: "8px",margin: "0 8px"}}
           {...item}
           slots={{
             
@@ -74,7 +74,7 @@ const CustomPagination: React.FC<{
           onChange={(e) => {
             setItemsPerPage(parseInt(e.target.value));
           }}
-          className=" p-1 border text-[#2080be]  border-[#2080be] rounded-md cursor-pointer"
+          className=" p-1 border text-[#2080be] text-sm  border-[#2080be] focus:outline-none rounded-md cursor-pointer"
         >
           {countPerPage.map((item) => (
             <option key={item} value={item}>

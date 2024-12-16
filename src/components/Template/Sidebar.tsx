@@ -3,7 +3,6 @@ import { MdDashboard } from "react-icons/md";
 import { BsFileEarmarkPlus } from "react-icons/bs";
 import { LuFileClock } from "react-icons/lu";
 import { RiUserSettingsLine } from "react-icons/ri";
-import { CiSettings } from "react-icons/ci";
 import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import planDetailsImg from "../../assets/plan_details_photo.png";
@@ -150,9 +149,9 @@ const Sidebar: React.FC = () => {
               <img src={planDetailsImg} alt="Plan details" />
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center w-[174px] h-[29px]">
               <button
-                className="py-2 px-6 bg-black text-white rounded-md hover:border"
+                className="py-2 px-6 bg-black text-white w-full rounded-md hover:border"
                 onClick={() => navigate("/upgradenow")}
               >
                 Upgrade Now

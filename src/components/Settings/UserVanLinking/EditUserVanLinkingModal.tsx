@@ -84,14 +84,16 @@ console.log(editData);
   const toggleSelectAll = () => {
     setSelectAll(!selectAll);
     if (!selectAll) {
-      setSelectedVans(filteredVans);
-      setVans(filteredVans);
+      // Add the filtered vans to the selection
+      setSelectedVans((prevSelected) => Array.from(new Set([...prevSelected, ...filteredVans])));
+      setVans((prevVans) => Array.from(new Set([...prevVans, ...filteredVans])));
     } else {
-      setSelectedVans([]);
-      setVans([]);
+      // Remove the filtered vans from the selection
+      setSelectedVans((prevSelected) => prevSelected.filter((van) => !filteredVans.includes(van)));
+      setVans((prevVans) => prevVans.filter((van) => !filteredVans.includes(van)));
     }
   };
-
+  
   return (
     <div className="fixed inset-0  mx-auto bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75">
       <div className="bg-white p-6 rounded-2xl w-[555px] h-[550px] border border-gray-200 shadow-2xl">
@@ -132,7 +134,7 @@ console.log(editData);
         <div className="px-6 mt-4 flex items-center gap-5 justify-between ">
           <div className="w-[332px] h-[32px]">
           <SearchBar
-            placeholder="Choose van to link..."
+            placeholder="Choose Vans to Link..."
             onSearch={handleSearch}
           />
           </div>

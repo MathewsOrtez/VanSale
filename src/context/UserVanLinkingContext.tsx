@@ -11,7 +11,7 @@ export const UserVanLinkingProvider: React.FC<{ children: React.ReactNode }> = (
     { srl: 3, name: "Gopan Krish",linkedvancount:3, active: true,vans:["Van 1","Van 2","Van 3"] },
     { srl: 4, name: "Dinesh Kumar",linkedvancount:2, active: false,vans:["Van 1","Van 2"] },
     { srl: 5, name: "Prakash Kumar",linkedvancount:1,  active: true,vans:["Van 1"] },
-    { srl: 6, name: "Manesh Kumar",linkedvancount:0,  active: true,vans:[] },
+    { srl: 6, name: "Manesh Kumar",linkedvancount:0,  active: true,vans:[] }
   ]);
 
   const addUserVanLinking = (newVan: any) => { 

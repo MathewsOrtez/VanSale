@@ -169,7 +169,7 @@ const ItemGroupTable: React.FC = () => {
   return (
     <>
       <div className="mx-4 relative">
-        <div className="flex justify-between items-center my-7">
+        <div className="flex justify-between items-center my-4">
           <p className="font-semibold text-lg">Item Group Master</p>
           <div className="flex items-center gap-4">
             {/* Search Bar */}
@@ -204,7 +204,7 @@ const ItemGroupTable: React.FC = () => {
             editModal ? "blur-sm" : ""
           }  ${openNewModal ? "blur-sm" : ""}`}
         >
-          <thead className="bg-gray-100 border text-sm">
+          <thead className="border-[#f1f1f1] border bg-white text-sm">
             <tr>
               <th className=" text-gray-500 font-semibold text-start py-1">
                 <CustomizedCheckbox
@@ -246,7 +246,7 @@ const ItemGroupTable: React.FC = () => {
               currentData?.map((item: any, index: number) => (
                 <tr
                   key={index}
-                  className="text-gray-800 text-sm border-b text-start cursor-pointer hover:bg-gray-50"
+                  className="text-gray-800 bg-[#fafafa]  border-[#f1f1f1] text-sm border-b text-start cursor-pointer hover:bg-gray-100"
                 >
                   <td className="text-start py-2">
                     <CustomizedCheckbox

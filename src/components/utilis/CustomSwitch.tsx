@@ -7,7 +7,7 @@ const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
   width: 40,
-  height: 22,
+  height: 23,
   padding: 4,
   display: "flex",
   "& .MuiSwitch-switchBase": {
@@ -28,8 +28,8 @@ const IOSSwitch = styled((props: SwitchProps) => (
   },
   "& .MuiSwitch-thumb": {
     boxSizing: "border-box",
-    width: 20,
-    height: 18,
+    width: 21,
+    height: 19,
     display: "flex",
     alignItems: "center",
     justifyContent: "center", 

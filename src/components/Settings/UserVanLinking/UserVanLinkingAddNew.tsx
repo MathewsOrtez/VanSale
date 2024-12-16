@@ -116,15 +116,19 @@ const UserVanLinkingAddNew: React.FC<UserVanLinkingNewModalProps> = ({
         {/* Upgrade Now Section */}
         <div
           style={{ backgroundImage: `url(${BackGroundLinkImage})` }}
-          className="h-[75px] bg-cover bg-center px-6  p-4 mt-4 flex flex-col justify-between"
+          className=" bg-no-repeat bg-center px-6 p-4  mt-4 flex flex-col justify-between"
         >
-          <p className="text-sm font-light text-white">
+          <div >
+          <p className="text-md h-[29px] font-light text-white">
             The maximum limit for linking users to a van is 5. Upgrade your plan
             to link more.
           </p>
-          <button className="w-[124px] h-[29px] rounded bg-black text-white text-sm self-end mt-2">
+          </div>
+        <div className="flex justify-end  items-end ">
+        <button className=" rounded w-[124px] h-[29px] bg-black text-white text-[14px] hover:border">
             Upgrade Now
           </button>
+        </div>
         </div>
 
         {/* User Input Section */}
@@ -141,7 +145,7 @@ const UserVanLinkingAddNew: React.FC<UserVanLinkingNewModalProps> = ({
             onChange={(e) => setName(e.target.value)}
             className="w-full p-2 border border-gray-300 focus:outline-none focus:border-[#D3EFF9] rounded-md"
           >
-            <option value="" className="text-sm">
+            <option value="" className="text-sm" disabled>
               Select User
             </option>
             {Users.map((user) => (
@@ -154,7 +158,7 @@ const UserVanLinkingAddNew: React.FC<UserVanLinkingNewModalProps> = ({
         {/* Search and Checkbox Section */}
         <div className="px-6 mt-4 flex items-center gap-5 justify-between ">
           <div className="w-[332px] h-[32px]">
-            <SearchBar placeholder="Search..." onSearch={handleSearch} />
+            <SearchBar placeholder="Choose Vans to Link..." onSearch={handleSearch} />
           </div>
           <div className="flex items-center gap-2 justify-between">
             <div>
@@ -170,7 +174,7 @@ const UserVanLinkingAddNew: React.FC<UserVanLinkingNewModalProps> = ({
         </div>
 
         {/* Vans List */}
-        <div className="px-6 mt-4 overflow-y-auto ">
+        <div className="px-6 mt-4 overflow-y-auto">
           {filteredVans.length === 0 && (
             <p className="text-sm py-2 px-4 text-gray-600 rounded-md bg-[#F0FBFF] border border-[#D3EFF9] mb-2">
               No vans found.

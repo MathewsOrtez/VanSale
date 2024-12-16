@@ -197,7 +197,7 @@ const BranchMasterTable: React.FC = () => {
   return (
     <>
       <div className="mx-4 relative">
-        <div className="flex justify-between items-center my-7">
+        <div className="flex justify-between items-center my-4">
           <p className="font-semibold text-lg">Branch Master</p>
           <div className="flex items-center gap-4">
             {/* Search Bar */}
@@ -232,7 +232,7 @@ const BranchMasterTable: React.FC = () => {
             editModal ? "blur-sm" : ""
           }  ${openNewModal ? "blur-sm" : ""}`}
         >
-          <thead className="bg-gray-100 border text-sm">
+          <thead className="border-[#f1f1f1] border bg-white text-sm">
             <tr>
               <th className=" text-gray-500 font-semibold text-start py-1">
                 <CustomizedCheckbox
@@ -283,7 +283,7 @@ const BranchMasterTable: React.FC = () => {
               currentData?.map((item: any, index: number) => (
                 <tr
                   key={index}
-                  className="text-gray-800 text-sm  border-b border-gray-200 text-start cursor-pointer hover:bg-gray-50"
+                  className="text-gray-800 text-sm bg-[#fafafa]  border-[#f1f1f1]  border-b text-start cursor-pointer hover:bg-gray-100"
                 >
                   <td className="text-start py-2">
                     <CustomizedCheckbox
