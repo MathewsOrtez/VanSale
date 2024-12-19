@@ -1,47 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { Close } from "@mui/icons-material";
-import CustomSwitch from "../utilis/CustomSwitch";
+import CustomSwitch from "../../components/utilis/CustomSwitch";
 const EditStateMasterModal: React.FC<{
   open: boolean;
   onClose: () => void;
   editData: any;
   onSave: (newRoute: {
-    name: string;
-    shortname: string;
-    active: boolean;
-    statecode: string;
+    nStateId: number;
+    cStateName: string;
+    cShortName: string;
+    bActive: boolean;
+    cStateCode: string;
   }) => void;
 }> = ({ open, onClose, editData, onSave }) => {
-  if (!open) return null;
-  const [name, setName] = useState(editData.name);
-  const [shortname, setShortname] = useState(editData.shortname);
-  const [active, setActive] = useState(editData.active);
-  const [statecode, setStatecode] = useState(editData.statecode);
+  const [cStateName, setcStateName] = useState(editData.cStateName);
+  const [cShortName, setcShortName] = useState(editData.cShortName);
+  const [bActive, setbActive] = useState(editData.bActive);
+  const [cStateCode, setcStateCode] = useState(editData.cStateCode);
 
   // Update state when editData changes (in case props change)
   useEffect(() => {
-    setName(editData.name);
-    setShortname(editData.shortname);
-    setActive(editData.active);
-    setStatecode(editData.statecode);
+    setcStateName(editData.cStateName);
+    setcShortName(editData.cShortName);
+    setbActive(editData.bActive);
+    setcStateCode(editData.cStateCode);
   }, [editData]);
 
   const handleSave = () => {
     // Prepare the updated data object
     const updatedData = {
       ...editData,
-      name,
-      shortname,
-      active,
-      statecode,
+      cStateName,
+      cShortName,
+      bActive,
+      cStateCode,
     };
     onSave(updatedData);
     onClose();
   };
-
+  if (!open) return null;
   return (
     <div className="fixed inset-0  mx-auto bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75">
-      <div className="bg-white p-6 rounded-2xl w-[784px] h-[285px] border-2 border-gray-200 shadow-2xl">
+      <div className="bg-white p-6 rounded-2xl w-[784px] h-[320px] border-2 border-gray-200 shadow-2xl">
         {/* Modal Header */}
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-semibold">State Master</h1>
@@ -65,8 +65,8 @@ const EditStateMasterModal: React.FC<{
             <input
               id="name"
               className="w-full border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={cStateName}
+              onChange={(e) => setcStateName(e.target.value)}
             />
           </div>
           <div className="mb-4 w-[298px] h-[35px]">
@@ -79,8 +79,8 @@ const EditStateMasterModal: React.FC<{
             <input
               id="short-name"
               className="w-full border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none"
-              value={shortname}
-              onChange={(e) => setShortname(e.target.value)}
+              value={cShortName}
+              onChange={(e) => setcShortName(e.target.value)}
             />
           </div>
         </div>
@@ -96,8 +96,8 @@ const EditStateMasterModal: React.FC<{
             <input
               id="statecode"
               className="w-full border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none"
-              value={statecode}
-              onChange={(e) => setStatecode(e.target.value)}
+              value={cStateCode}
+              onChange={(e) => setcStateCode(e.target.value)}
             />
           </div>
         </div>
@@ -107,8 +107,8 @@ const EditStateMasterModal: React.FC<{
           <div className="flex items-center gap-2">
             <span className="mr-2 font-semibold text-sm">Active/Inactive</span>
             <CustomSwitch
-              checked={active}
-              onChange={(e) => setActive(e.target.checked)}
+              checked={bActive}
+              onChange={(e) => setbActive(e.target.checked)}
             />
           </div>
 

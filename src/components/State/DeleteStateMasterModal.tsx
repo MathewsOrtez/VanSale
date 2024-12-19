@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Close } from "@mui/icons-material";
-import CustomSwitch from "../utilis/CustomSwitch";
+import CustomSwitch from "../../components/utilis/CustomSwitch";
 import DeleteIcon from "../../assets/TaxMaster/DeleteIcon.png"
 import EditIcon from "../../assets/TaxMaster/EditIcon.png"
 
 interface DeleteStateMasterModalProps {
   open: boolean;
   onClose: () => void;
-  deleteData: { srl: number; name: string; shortname: string; active: boolean, statecode: string };
-  onDelete: (data: { srl: number; name: string; shortname: string; active: boolean, statecode: string }) => void;
-  onSave: (data: { srl: number; name: string; shortname: string; active: boolean, statecode: string }) => void;
+  deleteData: { nStateId: number; cStateName: string; cShortName: string; bActive: boolean, cStateCode: string };
+  onDelete: (data: { nStateId: number; cStateName: string; cShortName: string; bActive: boolean, cStateCode: string }) => void;
+  onSave: (data: { nStateId: number; cStateName: string; cShortName: string; bActive: boolean, cStateCode: string }) => void;
 }
 
 const DeleteStateMasterModal: React.FC<DeleteStateMasterModalProps> = ({
@@ -19,20 +19,19 @@ const DeleteStateMasterModal: React.FC<DeleteStateMasterModalProps> = ({
   onDelete,
   onSave,
 }) => {
-  if (!open) return null;
 
-  const [name, setName] = useState(deleteData.name);
-  const [shortname, setShortname] = useState(deleteData.shortname);
-  const [active, setActive] = useState(deleteData.active);
+  const [cStateName, setcStateName] = useState(deleteData?.cStateName);
+  const [cShortName, setcShortName] = useState(deleteData?.cShortName);
+  const [bActive, setbActive] = useState(deleteData?.bActive);
   const [isEditing, setIsEditing] = useState(false); // Track edit mode
-  const [statecode, setStatecode] = useState(deleteData.statecode);
+  const [cStateCode, setcStateCode] = useState(deleteData?.cStateCode);
 
   // Sync data when modal is opened with new props
   useEffect(() => {
-    setName(deleteData.name);
-    setShortname(deleteData.shortname);
-    setActive(deleteData.active);
-    setStatecode(deleteData.statecode);
+    setcStateName(deleteData?.cStateName);
+    setcShortName(deleteData?.cShortName);
+    setbActive(deleteData?.bActive);
+    setcStateCode(deleteData?.cStateCode);
   }, [deleteData]);
 
   // Handle Delete
@@ -43,19 +42,19 @@ const DeleteStateMasterModal: React.FC<DeleteStateMasterModalProps> = ({
 
   // Handle Save
   const handleSave = () => {
-    const updatedData = { srl: deleteData.srl, name, shortname, active, statecode };
+    const updatedData = { nStateId: deleteData?.nStateId, cStateName, cShortName, bActive, cStateCode };
     onSave(updatedData);
     setIsEditing(false); // Exit edit mode after saving
     onClose();
   };
 
   const handleSwitchChange = (checked: boolean) => {
-    setActive(checked); // Update the local active state
+    setbActive(checked); // Update the local active state
   };
-
+  if (!open) return null;
   return (
     <div className={`fixed inset-0 bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75`}>
-      <div className="bg-white p-6 rounded-2xl w-[784px] h-[285px] border-2 border-gray-200 shadow-2xl">
+      <div className="bg-white p-6 rounded-2xl w-[784px] h-[320px] border-2 border-gray-200 shadow-2xl">
         {/* Modal Header */}
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-semibold">State Master</h1>
@@ -75,8 +74,8 @@ const DeleteStateMasterModal: React.FC<DeleteStateMasterModalProps> = ({
               className={`w-full border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none ${
                 isEditing ? "" : "bg-gray-50 cursor-not-allowed"
               }`}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={cStateName}
+              onChange={(e) => setcStateName(e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -89,8 +88,8 @@ const DeleteStateMasterModal: React.FC<DeleteStateMasterModalProps> = ({
               className={`w-full border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none ${
                 isEditing ? "" : "bg-gray-50 cursor-not-allowed"
               }`}
-              value={shortname}
-              onChange={(e) => setShortname(e.target.value)}
+              value={cShortName}
+              onChange={(e) => setcShortName(e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -105,8 +104,8 @@ const DeleteStateMasterModal: React.FC<DeleteStateMasterModalProps> = ({
               className={`w-full border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none ${
                 isEditing ? "" : "bg-gray-50 cursor-not-allowed"
               }`}
-              value={statecode}
-              onChange={(e) => setStatecode(e.target.value)}
+              value={cStateCode}
+              onChange={(e) => setcStateCode(e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -117,7 +116,7 @@ const DeleteStateMasterModal: React.FC<DeleteStateMasterModalProps> = ({
           <div className="flex items-center gap-4">
             <span className="text-sm font-semibold">Active/Inactive</span>
             <CustomSwitch
-              checked={active}
+              checked={bActive}
               onChange={(_e, checked) => handleSwitchChange(checked)}
               disabled={!isEditing} // Switch is enabled only in edit mode
             />

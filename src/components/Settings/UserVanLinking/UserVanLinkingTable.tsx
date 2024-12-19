@@ -28,14 +28,13 @@ const UserVanLinkingTable: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
-
   const handleSearch = (value: string) => {
     setSearchTerm(value.toLowerCase());
     setCurrentPage(1);
   };
 
   const filteredData = userVanLinkingData.filter((item: any) =>
-    item.name.toLowerCase().includes(searchTerm) 
+    item.name.toLowerCase().includes(searchTerm)
   );
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -154,10 +153,6 @@ const UserVanLinkingTable: React.FC = () => {
     const updatedTax = userVanLinkingData.find((item: any) => item.srl === srl);
     if (updatedTax) {
       editUserVanLinking({ ...updatedTax, active });
-      // CustomAlert({
-      //   type: "success",
-      //   message: `${updatedTax.name} updated successfully.`,
-      // });
     }
   };
 
@@ -171,9 +166,9 @@ const UserVanLinkingTable: React.FC = () => {
   return (
     <>
       <div className="mx-4">
-        <div className="flex justify-between items-center my-4">
+        <div className="flex justify-between flex-wrap items-center my-4">
           <p className="font-semibold text-lg">User - Van Linking</p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {/* Search Bar */}
             <SearchBar
               onSearch={handleSearch}

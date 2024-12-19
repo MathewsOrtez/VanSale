@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 import { Close } from "@mui/icons-material";
-import CustomSwitch from "../utilis/CustomSwitch";
+import CustomSwitch from "../../components/utilis/CustomSwitch";
 import { useItemGroup } from "../../context/ItemGroupContext";
 
 interface NewRouteModalProps {
     open: boolean;
     onClose: () => void;
-    onSave: (newData: { name: string; shortname: string; active: boolean }) => void;
+    onSave: (newData: { cItemGroupName: string; cShortName: string; bActive: boolean }) => void;
   }
 const ItemGroupAddNew: React.FC<NewRouteModalProps> = ({
   open,
-  onClose,
+  onClose
 }) => {
-    const [name, setName] = useState("");
-    const [shortname, setShortname] = useState("");
-    const [active, setActive] = useState(false);
+    const [cItemGroupName, setcItemGroupName] = useState("");
+    const [cShortName, setcShortName] = useState("");
+    const [bActive, setbActive] = useState(false);
     const { addItemGroup } = useItemGroup();
 
     const handleSave = () => {
-        if (name && shortname) {
-          addItemGroup({ name, shortname, active });
-          setName("");
-          setShortname("");
-          setActive(false);
-          console.log({ name, shortname, active });
+        if (cItemGroupName && cShortName) {
+          addItemGroup({ cItemGroupName, cShortName, bActive });
+          setcItemGroupName("");
+          setcShortName("");
+          setbActive(false);
+          console.log({ cItemGroupName, cShortName, bActive });
           onClose();
         } else {
           alert("Please fill out all fields.");
@@ -59,23 +59,22 @@ const ItemGroupAddNew: React.FC<NewRouteModalProps> = ({
             </label>
             <input
               id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={cItemGroupName}
+              onChange={(e) => setcItemGroupName(e.target.value)}
               className=" border border-gray-200 rounded-md p-2 w-[426px] h-[35px] focus:border-[#94cef9] focus:outline-none"
             />
           </div>
           <div className="mb-4">
             <label
               htmlFor="short-name"
-            
               className="block text-sm font-medium my-2 text-gray-700"
             >
               Short Name
             </label>
             <input
               id="short-name"
-              value={shortname}
-              onChange={(e) => setShortname(e.target.value)}
+              value={cShortName}
+              onChange={(e) => setcShortName(e.target.value)}
               className="w-[250px] h-[35px] border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none"
             />
           </div>
@@ -85,7 +84,7 @@ const ItemGroupAddNew: React.FC<NewRouteModalProps> = ({
         <div className="flex justify-end items-center mt-4 gap-4">
           <div className="flex items-center gap-2">
             <span className="mr-2 text-sm font-semibold">Active/Inactive</span>
-            <CustomSwitch  checked={active} onChange={(e) => setActive(e.target.checked)} />
+            <CustomSwitch  checked={bActive} onChange={(e) => setbActive(e.target.checked)} />
           </div>
 
           <div className="flex gap-4 ">

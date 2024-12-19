@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 import { Close } from "@mui/icons-material";
-import CustomSwitch from "../../components/utilis/CustomSwitch";
+import CustomSwitch from "../utilis/CustomSwitch";
 import { useTax } from "../../context/TaxContext";
 
 interface NewRouteModalProps {
     open: boolean;
     onClose: () => void;
-    onSave: (newData: { name: string; shortname: string; active: boolean }) => void;
+    onSave: (newData: { cTaxName: string; cShortName: string; bActive: boolean }) => void;
   }
 const TaxAddNew: React.FC<NewRouteModalProps> = ({
   open,
   onClose,
 }) => {
-    const [name, setName] = useState("");
-    const [shortname, setShortname] = useState("");
-    const [active, setActive] = useState(false);
+    const [cTaxName, setCTaxName] = useState("");
+    const [cShortName, setShortname] = useState("");
+    const [bActive, setActive] = useState(false);
     const { addTax } = useTax();
 
     const handleSave = () => {
-        if (name && shortname) {
-            addTax({ name, shortname, active });
-          setName("");
-          setShortname("");
-          setActive(false);
-          console.log({ name, shortname, active });
+        if (cTaxName && cShortName) {
+            addTax({ cTaxName, cShortName, bActive });
+      setCTaxName("");
+      setShortname("");
+      setActive(false);
+      console.log({ cTaxName, cShortName, bActive });
           onClose();
         } else {
           alert("Please fill out all fields.");
@@ -59,8 +59,8 @@ const TaxAddNew: React.FC<NewRouteModalProps> = ({
             </label>
             <input
               id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={cTaxName}
+              onChange={(e) => setCTaxName(e.target.value)}
               className="w-[426px] h-[35px] border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none"
             />
           </div>
@@ -74,7 +74,7 @@ const TaxAddNew: React.FC<NewRouteModalProps> = ({
             </label>
             <input
               id="short-name"
-              value={shortname}
+              value={cShortName}
               onChange={(e) => setShortname(e.target.value)}
               className="w-[250px] h-[35px] border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none"
             />
@@ -85,7 +85,7 @@ const TaxAddNew: React.FC<NewRouteModalProps> = ({
         <div className="flex justify-end items-center mt-4 gap-4">
           <div className="flex justify-center items-center gap-2">
             <span className="mr-2 font-semibold text-sm">Active/Inactive</span>
-            <CustomSwitch  checked={active} onChange={(e) => setActive(e.target.checked)} />
+            <CustomSwitch  checked={bActive} onChange={(e) => setActive(e.target.checked)} />
           </div>
 
           <div className="flex gap-4 ">

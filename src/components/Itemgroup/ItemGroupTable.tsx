@@ -2,19 +2,18 @@ import React, { useEffect, useState } from "react";
 import DeleteIcon from "../../assets/TaxMaster/DeleteIcon.png";
 import EditIcon from "../../assets/TaxMaster/EditIcon.png";
 import DataDeleteIcon from "../../assets/TaxMaster/DataDeleteIcon.png";
-import CustomSwitch from "../utilis/CustomSwitch";
-import CustomizedCheckbox from "../utilis/CustomCheckbox";
-import CustomAlert from "../utilis/CustomAlert";
+import CustomSwitch from "../../components/utilis/CustomSwitch";
+import CustomizedCheckbox from "../../components/utilis/CustomCheckbox";
+import CustomAlert from "../../components/utilis/CustomAlert";
 import DeleteItemGroupModal from "./DeleteItemGroupModal";
 import EditItemGroupModal from "./EditItemGroupModal";
 import { useItemGroup } from "../../context/ItemGroupContext";
-import { InputAdornment } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import ItemGroupAddNew from "./ItemGroupAddNew";
-import CustomPagination from "../utilis/Pagination";
-import SearchBar from "../utilis/SearchBox";
+import CustomPagination from "../../components/utilis/Pagination";
+import SearchBar from "../../components/utilis/SearchBox";
+import Loader from "../../components/utilis/Loader";
 const ItemGroupTable: React.FC = () => {
-  const { itemGroupData, editItemGroup, deleteItemGroup, deleteChecked } =
+  const { itemGroupData, editItemGroup, deleteItemGroup, deleteChecked ,loading} =
     useItemGroup();
   const [openModal, setOpenModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
@@ -34,8 +33,8 @@ const ItemGroupTable: React.FC = () => {
 
   const filteredData = itemGroupData.filter(
     (item: any) =>
-      item.name.toLowerCase().includes(searchTerm) ||
-      item.shortname.toLowerCase().includes(searchTerm)
+      item.cItemGroupName.toLowerCase().includes(searchTerm) ||
+      item.cShortName.toLowerCase().includes(searchTerm)
   );
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -47,11 +46,11 @@ const ItemGroupTable: React.FC = () => {
   }, [currentPage, itemsPerPage, searchTerm]);
 
   // Handle individual checkbox change
-  const handleRowCheckboxChange = (srl: number, checked: boolean) => {
+  const handleRowCheckboxChange = (nItemGroupId: number, checked: boolean) => {
     if (checked) {
-      setSelectedRows((prev) => [...prev, srl]);
+      setSelectedRows((prev) => [...prev, nItemGroupId]);
     } else {
-      setSelectedRows((prev) => prev.filter((id) => id !== srl));
+      setSelectedRows((prev) => prev.filter((id: number) => id !== nItemGroupId));
     }
   };
 
@@ -59,7 +58,7 @@ const ItemGroupTable: React.FC = () => {
   const handleHeaderCheckboxChange = (checked: boolean) => {
     setSelectAll(checked);
     if (checked) {
-      setSelectedRows(currentData.map((item: any) => item.srl));
+      setSelectedRows(currentData.map((item: any) => item.nItemGroupId));
     } else {
       setSelectedRows([]);
     }
@@ -75,15 +74,11 @@ const ItemGroupTable: React.FC = () => {
           deleteChecked(selectedRows);
           setSelectedRows([]);
           setSelectAll(false);
-          CustomAlert({
-            type: "success",
-            message: `${selectedRows.length} items deleted successfully.`,
-          });
         },
       });
     } else {
       CustomAlert({
-        type: "error",
+        type: "warning",
         message: "Please select at least one item to delete.",
       });
     }
@@ -91,12 +86,12 @@ const ItemGroupTable: React.FC = () => {
 
   // Open the modal
   const handleClickOpen = (
-    srl: number,
-    name: string,
-    shortname: string,
-    active: boolean
+    nItemGroupId: number,
+    cItemGroupName: string,
+    cShortName: string,
+    bActive: boolean,
   ) => {
-    setDeleteData({ srl, name, shortname, active });
+    setDeleteData({ nItemGroupId, cItemGroupName, cShortName, bActive });
     setOpenModal(true);
   };
 
@@ -106,21 +101,17 @@ const ItemGroupTable: React.FC = () => {
   };
 
   const handleEditClick = (
-    srl: number,
-    name: string,
-    shortname: string,
-    active: boolean
+    nItemGroupId: number,
+    cItemGroupName: string,
+    cShortName: string,
+    bActive: boolean,
   ) => {
-    setEditData({ srl, name, shortname, active });
+    setEditData({ nItemGroupId, cItemGroupName, cShortName, bActive });
     setEditModal(true);
   };
 
   const handleSave = (updatedData: any) => {
     editItemGroup(updatedData);
-    CustomAlert({
-      type: "success",
-      message: `Tax ${updatedData.name} updated successfully.`,
-    });
   };
 
   const handleDelete = (deleteData: any) => {
@@ -128,13 +119,9 @@ const ItemGroupTable: React.FC = () => {
       type: "warning",
       message: "Are you sure you want to delete these item?",
       onConfirm: () => {
-        deleteItemGroup(deleteData.srl);
+        deleteItemGroup(deleteData.nItemGroupId);
         setSelectAll(false);
         setSelectedRows([]);
-        CustomAlert({
-          type: "success",
-          message: `${deleteData.name} deleted successfully.`,
-        });
       },
     });
   };
@@ -148,14 +135,12 @@ const ItemGroupTable: React.FC = () => {
   };
 
   // Handle Switch Toggle
-  const handleSwitchChange = (srl: number, active: boolean) => {
-    const updatedTax = itemGroupData.find((item: any) => item.srl === srl);
+  const handleSwitchChange = (nItemGroupId: number, bActive: boolean) => {
+    const updatedTax = itemGroupData.find(
+      (item: any) => item.nItemGroupId === nItemGroupId
+    );
     if (updatedTax) {
-      editItemGroup({ ...updatedTax, active });
-      // CustomAlert({
-      //   type: "success",
-      //   message: `${updatedTax.name} updated successfully.`,
-      // });
+      editItemGroup({ ...updatedTax, bActive });
     }
   };
 
@@ -168,10 +153,11 @@ const ItemGroupTable: React.FC = () => {
 
   return (
     <>
-      <div className="mx-4 relative">
-        <div className="flex justify-between items-center my-4">
+    {loading && <Loader />}
+      <div className="mx-4">
+        <div className="flex justify-between flex-wrap items-center my-7">
           <p className="font-semibold text-lg">Item Group Master</p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {/* Search Bar */}
             <SearchBar
               onSearch={handleSearch}
@@ -180,17 +166,17 @@ const ItemGroupTable: React.FC = () => {
             />
 
             {/* Action Buttons */}
-            <div className="flex gap-4 ">
+            <div className="flex gap-2 ">
               {/* Delete Button */}
               <button
-                className=" px-3 text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors"
-                onClick={handleDeleteSelected}
+                className="text-white bg-[#fa3b3b] flex items-center justify-center w-[32px] h-[33px] rounded-md hover:shadow-md transition-colors"
+                onClick={handleDeleteSelected}   
               >
-                <img src={DeleteIcon} />
+                <img src={DeleteIcon} className="w-[19px] h-[20px]" />
               </button>
               {/* Add New Button */}
               <button
-                className="  w-[98px] h-[33px] bg-[#25add7] rounded-md text-white  font-medium hover:bg-[#1a8d9d] transition-colors"
+                className="  w-[98px] h-[33px] bg-[#25add7] rounded-md text-white  text-md hover:bg-[#1a8d9d] transition-colors"
                 onClick={() => setOpenNewModal(true)}
               >
                 Add New
@@ -250,9 +236,9 @@ const ItemGroupTable: React.FC = () => {
                 >
                   <td className="text-start py-2">
                     <CustomizedCheckbox
-                      checked={selectedRows.includes(item.srl)}
+                      checked={selectedRows.includes(item?.nItemGroupId)}
                       onChange={(e) =>
-                        handleRowCheckboxChange(item.srl, e.target.checked)
+                        handleRowCheckboxChange(item?.nItemGroupId, e.target.checked)
                       }
                     />
                   </td>
@@ -260,59 +246,59 @@ const ItemGroupTable: React.FC = () => {
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item?.srl,
-                        item?.name,
-                        item?.shortname,
-                        item?.active
+                        item?.nItemGroupId,
+                        item?.cItemGroupName,
+                        item?.cShortName,
+                        item?.bActive
                       )
                     }
                   >
-                    {item?.srl}
+                    {startIndex + index + 1}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item?.srl,
-                        item?.name,
-                        item?.shortname,
-                        item?.active
+                        item?.nItemGroupId,
+                        item?.cItemGroupName,
+                        item?.cShortName,
+                        item?.bActive
                       )
                     }
                   >
-                    {item?.name}
+                    {item?.cItemGroupName}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item?.srl,
-                        item?.name,
-                        item?.shortname,
-                        item?.active
+                        item?.nItemGroupId,
+                        item?.cItemGroupName,
+                        item?.cShortName,
+                        item?.bActive
                       )
                     }
                   >
-                    {item?.shortname}
+                    {item?.cShortName}
                   </td>
                   <td className="text-center py-2">
                     <CustomSwitch
-                      checked={item.active}
+                      checked={item.bActive}
                       onChange={(e, checked) =>
-                        handleSwitchChange(item.srl, checked)
+                        handleSwitchChange(item?.nItemGroupId, checked)
                       }
                     />
                   </td>
                   <td className=" text-center py-2">
                     <button
-                      aria-label={`Edit ${item.name}`}
+                      aria-label={`Edit ${item?.cItemGroupName}`}
                       className="hover:text-blue-500 transition-colors"
                       onClick={() =>
                         handleEditClick(
-                          item?.srl,
-                          item?.name,
-                          item?.shortname,
-                          item?.active
+                          item?.nItemGroupId,
+                          item?.cItemGroupName,
+                          item?.cShortName,
+                          item?.bActive
                         )
                       }
                     >
@@ -321,14 +307,14 @@ const ItemGroupTable: React.FC = () => {
                   </td>
                   <td className=" text-center py-2">
                     <button
-                      aria-label={`Delete ${item.name}`}
+                      aria-label={`Delete ${item?.cItemGroupName}`}
                       className="hover:text-red-700 transition-colors"
                       onClick={() =>
                         handleClickOpen(
-                          item?.srl,
-                          item?.name,
-                          item?.shortname,
-                          item?.active
+                          item?.nItemGroupId,
+                          item?.cItemGroupName,
+                          item?.cShortName,
+                          item?.bActive
                         )
                       }
                     >
@@ -340,7 +326,7 @@ const ItemGroupTable: React.FC = () => {
             )}
           </tbody>
         </table>
-        <div>
+        <div className="absolute bottom-0 right-0 w-full px-4">
           <div>
             <CustomPagination
               currentPage={currentPage}

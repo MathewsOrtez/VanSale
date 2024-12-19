@@ -13,7 +13,7 @@ const Template: React.FC = () => {
         <div className="flex-col fixed z-50">
           <Sidebar />
         </div>
-        <main className="w-full ml-[16rem]  bg-[#fafafa] ">
+        <main className="w-full ml-[16rem] h-screen bg-[#fafafa] relative">
           <Outlet />
         </main>
       </div>

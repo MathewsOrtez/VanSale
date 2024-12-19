@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import DeleteIcon from "../../assets/TaxMaster/DeleteIcon.png";
 import EditIcon from "../../assets/TaxMaster/EditIcon.png";
 import DataDeleteIcon from "../../assets/TaxMaster/DataDeleteIcon.png";
-import CustomSwitch from "../utilis/CustomSwitch";
-import CustomizedCheckbox from "../utilis/CustomCheckbox";
-import CustomAlert from "../utilis/CustomAlert";
-import { useStates } from "../../context/StateContext";
-import CustomPagination from "../utilis/Pagination";
+import CustomSwitch from "../../components/utilis/CustomSwitch";
+import CustomizedCheckbox from "../../components/utilis/CustomCheckbox";
+import CustomAlert from "../../components/utilis/CustomAlert";
+import { useStateData} from "../../context/StateContext";
+import CustomPagination from "../../components/utilis/Pagination";
 import StateMasterAddNew from "./StateMasterAddNew";
 import DeleteStateMasterModal from "./DeleteStateMasterModal";
 import EditStateMasterModal from "./EditStateMasterModal";
-import SearchBar from "../utilis/SearchBox";
+import SearchBar from "../../components/utilis/SearchBox";
+import Loader from "../../components/utilis/Loader";
 const StateMasterTable: React.FC = () => {
-  const { deleteState, editState, stateData, deleteChecked } = useStates();
+  const { deleteState, editState, stateData, deleteChecked ,loading} = useStateData();
   const [openModal, setOpenModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -31,9 +32,9 @@ const StateMasterTable: React.FC = () => {
 
   const filteredData = stateData.filter(
     (item: any) =>
-      item.name.toLowerCase().includes(searchTerm) ||
-      item.shortname.toLowerCase().includes(searchTerm) ||
-      item.statecode.toLowerCase().includes(searchTerm)
+      item.cStateName.toLowerCase().includes(searchTerm) ||
+      item.cShortName.toLowerCase().includes(searchTerm) ||
+      item.cStateCode.toLowerCase().includes(searchTerm)
   );
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -45,11 +46,11 @@ const StateMasterTable: React.FC = () => {
   }, [currentPage, itemsPerPage, searchTerm]);
 
   // Handle individual checkbox change
-  const handleRowCheckboxChange = (srl: number, checked: boolean) => {
+  const handleRowCheckboxChange = (nStateId: number, checked: boolean) => {
     if (checked) {
-      setSelectedRows((prev) => [...prev, srl]);
+      setSelectedRows((prev) => [...prev, nStateId]);
     } else {
-      setSelectedRows((prev) => prev.filter((id) => id !== srl));
+      setSelectedRows((prev) => prev.filter((id) => id !== nStateId));
     }
   };
 
@@ -57,7 +58,7 @@ const StateMasterTable: React.FC = () => {
   const handleHeaderCheckboxChange = (checked: boolean) => {
     setSelectAll(checked);
     if (checked) {
-      setSelectedRows(currentData.map((item: any) => item.srl));
+      setSelectedRows(currentData.map((item: any) => item.nStateId));
     } else {
       setSelectedRows([]);
     }
@@ -73,10 +74,6 @@ const StateMasterTable: React.FC = () => {
           deleteChecked(selectedRows);
           setSelectedRows([]);
           setSelectAll(false);
-          CustomAlert({
-            type: "success",
-            message: `${selectedRows.length} items deleted successfully.`,
-          });
         },
       });
     } else {
@@ -89,13 +86,13 @@ const StateMasterTable: React.FC = () => {
 
   // Open the modal
   const handleClickOpen = (
-    srl: number,
-    name: string,
-    shortname: string,
-    active: boolean,
-    statecode: string
+    nStateId: number,
+    cStateName: string,
+    cShortName: string,
+    bActive: boolean,
+    cStateCode: string
   ) => {
-    setDeleteData({ srl, name, shortname, active, statecode });
+    setDeleteData({ nStateId, cStateName, cShortName, bActive, cStateCode });
     setOpenModal(true);
   };
 
@@ -105,22 +102,18 @@ const StateMasterTable: React.FC = () => {
   };
 
   const handleEditClick = (
-    srl: number,
-    name: string,
-    shortname: string,
-    active: boolean,
-    statecode: string
+    nStateId: number,
+    cStateName: string,
+    cShortName: string,
+    bActive: boolean,
+    cStateCode: string
   ) => {
-    setEditData({ srl, name, shortname, active, statecode });
+    setEditData({ nStateId, cStateName, cShortName, bActive, cStateCode });
     setEditModal(true);
   };
 
   const handleSave = (updatedData: any) => {
     editState(updatedData);
-    CustomAlert({
-      type: "success",
-      message: `Tax ${updatedData.name} updated successfully.`,
-    });
   };
 
   const handleDelete = (deleteData: any) => {
@@ -128,13 +121,9 @@ const StateMasterTable: React.FC = () => {
       type: "warning",
       message: "Are you sure you want to delete these item?",
       onConfirm: () => {
-        deleteState(deleteData.srl);
+        deleteState(deleteData?.nStateId);
         setSelectAll(false);
         setSelectedRows([]);
-        CustomAlert({
-          type: "success",
-          message: `${deleteData.name} deleted successfully.`,
-        });
       },
     });
   };
@@ -148,14 +137,10 @@ const StateMasterTable: React.FC = () => {
   };
 
   // Handle Switch Toggle
-  const handleSwitchChange = (srl: number, active: boolean) => {
-    const updatedTax = stateData.find((item: any) => item.srl === srl);
+  const handleSwitchChange = (nStateId: number, bActive: boolean) => {
+    const updatedTax = stateData.find((item: any) => item.nStateId === nStateId);
     if (updatedTax) {
-      editState({ ...updatedTax, active });
-      // CustomAlert({
-      //   type: "success",
-      //   message: `${updatedTax.name} updated successfully.`,
-      // });
+      editState({ ...updatedTax, bActive });
     }
   };
 
@@ -168,10 +153,11 @@ const StateMasterTable: React.FC = () => {
 
   return (
     <>
-      <div className="mx-4 relative">
-        <div className="flex justify-between items-center my-4">
+      {loading && <Loader />}
+      <div className="mx-4">
+        <div className="flex justify-between flex-wrap items-center my-7">
           <p className="font-semibold text-lg">State Master</p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {/* Search Bar */}
             <SearchBar
               onSearch={handleSearch}
@@ -183,14 +169,14 @@ const StateMasterTable: React.FC = () => {
             <div className="flex gap-4 ">
               {/* Delete Button */}
               <button
-                className=" px-3 text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors"
+                className="text-white bg-[#fa3b3b] flex items-center justify-center w-[32px] h-[33px] rounded-md hover:shadow-md transition-colors"
                 onClick={handleDeleteSelected}
               >
-                <img src={DeleteIcon} />
+                <img src={DeleteIcon} className="w-[19px] h-[20px]" />
               </button>
               {/* Add New Button */}
               <button
-                className="  w-[98px] h-[33px] bg-[#25add7] rounded-md text-white  font-medium hover:bg-[#1a8d9d] transition-colors"
+                className="  w-[98px] h-[33px] bg-[#25add7] rounded-md text-white text-md hover:bg-[#1a8d9d] transition-colors"
                 onClick={() => setOpenNewModal(true)}
               >
                 Add New
@@ -204,7 +190,7 @@ const StateMasterTable: React.FC = () => {
             editModal ? "blur-sm" : ""
           }  ${openNewModal ? "blur-sm" : ""}`}
         >
-          <thead className="border-[#f1f1f1] border bg-white text-sm">
+          <thead className="border border-[#f1f1f1]  bg-white text-sm">
             <tr>
               <th className=" text-gray-500 font-semibold text-start py-1">
                 <CustomizedCheckbox
@@ -253,9 +239,9 @@ const StateMasterTable: React.FC = () => {
                 >
                   <td className="text-start py-2">
                     <CustomizedCheckbox
-                      checked={selectedRows.includes(item.srl)}
+                      checked={selectedRows.includes(item.nStateId)}
                       onChange={(e) =>
-                        handleRowCheckboxChange(item.srl, e.target.checked)
+                        handleRowCheckboxChange(item.nStateId, e.target.checked)
                       }
                     />
                   </td>
@@ -263,77 +249,77 @@ const StateMasterTable: React.FC = () => {
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item?.srl,
-                        item?.name,
-                        item?.shortname,
-                        item?.active,
-                        item?.statecode
+                        item?.nStateId,
+                        item?.cStateName,
+                        item?.cShortName,
+                        item?.bActive,
+                        item?.cStateCode
                       )
                     }
                   >
-                    {item?.srl}
+                    {startIndex + index + 1}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item?.srl,
-                        item?.name,
-                        item?.shortname,
-                        item?.active,
-                        item?.statecode
+                        item?.nStateId,
+                        item?.cStateName,
+                        item?.cShortName,
+                        item?.bActive,
+                        item?.cStateCode
                       )
                     }
                   >
-                    {item?.name}
+                    {item?.cStateName}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item?.srl,
-                        item?.name,
-                        item?.shortname,
-                        item?.active,
-                        item?.statecode
+                        item?.nStateId,
+                        item?.cStateName,
+                        item?.cShortName,
+                        item?.bActive,
+                        item?.cStateCode
                       )
                     }
                   >
-                    {item?.shortname}
+                    {item?.cShortName}
                   </td>
                   <td
                     className="text-start py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item?.srl,
-                        item?.name,
-                        item?.shortname,
-                        item?.active,
-                        item?.statecode
+                        item?.nStateId,
+                        item?.cStateName,
+                        item?.cShortName,
+                        item?.bActive,
+                        item?.cStateCode
                       )
                     }
                   >
-                    {item?.statecode}
+                    {item?.cStateCode}
                   </td>
                   <td className="text-center py-2">
                     <CustomSwitch
-                      checked={item.active}
+                      checked={item?.bActive}
                       onChange={(e, checked) =>
-                        handleSwitchChange(item?.srl, checked)
+                        handleSwitchChange(item?.nStateId, checked)
                       }
                     />
                   </td>
                   <td className=" text-center py-2">
                     <button
-                      aria-label={`Edit ${item?.name}`}
+                      aria-label={`Edit ${item?.cStateName}`}
                       className="hover:text-blue-500 transition-colors"
                       onClick={() =>
                         handleEditClick(
-                          item?.srl,
-                          item?.name,
-                          item?.shortname,
-                          item?.active,
-                          item?.statecode
+                          item?.nStateId,
+                          item?.cStateName,
+                          item?.cShortName,
+                          item?.bActive,
+                          item?.cStateCode
                         )
                       }
                     >
@@ -342,15 +328,15 @@ const StateMasterTable: React.FC = () => {
                   </td>
                   <td className=" text-center py-2">
                     <button
-                      aria-label={`Delete ${item?.name}`}
+                      aria-label={`Delete ${item?.cStateName}`}
                       className="hover:text-red-700 transition-colors"
                       onClick={() =>
                         handleClickOpen(
-                          item?.srl,
-                          item?.name,
-                          item?.shortname,
-                          item?.active,
-                          item?.statecode
+                          item?.nStateId,
+                          item?.cStateName,
+                          item?.cShortName,
+                          item?.bActive,
+                          item?.cStateCode
                         )
                       }
                     >
@@ -362,7 +348,7 @@ const StateMasterTable: React.FC = () => {
             )}
           </tbody>
         </table>
-        <div>
+        <div className="absolute bottom-0 right-0 w-full px-4">
           <div>
             <CustomPagination
               currentPage={currentPage}

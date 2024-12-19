@@ -143,10 +143,10 @@ const handleDeleteSelected = () => {
 
   return (
     <>
-    <div className="mx-4">
-      <div className="flex justify-between items-center my-4">
+    <div className="mx-4"> 
+      <div className="flex justify-between flex-wrap items-center my-4">
           <p className="font-semibold text-lg">Route Master</p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {/* Search Bar */}
             <SearchBar
             onSearch={handleSearch}
@@ -235,7 +235,7 @@ const handleDeleteSelected = () => {
           ))}
         </tbody>
       </table>
-   <div>
+   <div className="absolute bottom-0 right-0 w-full px-4">
    <div>
             <CustomPagination
               currentPage={currentPage}

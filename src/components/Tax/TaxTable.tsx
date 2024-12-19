@@ -13,7 +13,7 @@ import CustomPagination from "../utilis/Pagination";
 import SearchBar from "../utilis/SearchBox";
 import Loader from "../utilis/Loader";
 const TaxTable: React.FC = () => {
-  const { taxData, editTax, deleteTax, deleteChecked } = useTax();
+  const { taxData, editTax, deleteTax, deleteChecked ,loading} = useTax();
   const [openModal, setOpenModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
@@ -31,8 +31,8 @@ const TaxTable: React.FC = () => {
 
   const filteredData = taxData.filter(
     (item: any) =>
-      item.name.toLowerCase().includes(searchTerm) ||
-      item.shortname.toLowerCase().includes(searchTerm)
+      item.cTaxName.toLowerCase().includes(searchTerm) ||
+      item.cShortName.toLowerCase().includes(searchTerm)
   );
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -44,11 +44,11 @@ const TaxTable: React.FC = () => {
   }, [currentPage, itemsPerPage, searchTerm]);
 
   // Handle individual checkbox change
-  const handleRowCheckboxChange = (srl: number, checked: boolean) => {
+  const handleRowCheckboxChange = (nTaxId: number, checked: boolean) => {
     if (checked) {
-      setSelectedRows((prev) => [...prev, srl]);
+      setSelectedRows((prev) => [...prev, nTaxId]);
     } else {
-      setSelectedRows((prev) => prev.filter((id) => id !== srl));
+      setSelectedRows((prev) => prev.filter((id: number) => id !== nTaxId));
     }
   };
 
@@ -56,7 +56,7 @@ const TaxTable: React.FC = () => {
   const handleHeaderCheckboxChange = (checked: boolean) => {
     setSelectAll(checked);
     if (checked) {
-      setSelectedRows(currentData.map((item: any) => item.srl));
+      setSelectedRows(currentData.map((item: any) => item.nTaxId));
     } else {
       setSelectedRows([]);
     }
@@ -88,12 +88,12 @@ const TaxTable: React.FC = () => {
 
   // Open the modal
   const handleClickOpen = (
-    srl: number,
-    name: string,
-    shortname: string,
-    active: boolean
+    nTaxId: number,
+    cTaxName: string,
+    cShortName: string,
+    bActive: boolean
   ) => {
-    setDeleteData({ srl, name, shortname, active });
+    setDeleteData({ nTaxId, cTaxName, cShortName, bActive });
     setOpenModal(true);
   };
 
@@ -103,12 +103,12 @@ const TaxTable: React.FC = () => {
   };
 
   const handleEditClick = (
-    srl: number,
-    name: string,
-    shortname: string,
-    active: boolean
+    nTaxId: number,
+    cTaxName: string,
+    cShortName: string,
+    bActive: boolean
   ) => {
-    setEditData({ srl, name, shortname, active });
+    setEditData({ nTaxId, cTaxName, cShortName, bActive });
     setEditModal(true);
   };
 
@@ -116,7 +116,7 @@ const TaxTable: React.FC = () => {
     editTax(updatedData);
     CustomAlert({
       type: "success",
-      message: `${updatedData.name} updated successfully.`,
+      message: `${updatedData.cTaxName} updated successfully.`,
     });
   };
 
@@ -125,12 +125,12 @@ const TaxTable: React.FC = () => {
       type: "warning",
       message: "Are you sure you want to delete these item?",
       onConfirm: () => {
-        deleteTax(deleteData.srl);
+        deleteTax(deleteData.nTaxId);
         setSelectAll(false);
         setSelectedRows([]);
         CustomAlert({
           type: "success",
-          message: `${deleteData.name} deleted successfully.`,
+          message: `${deleteData.cTaxName} deleted successfully.`,
         });
       },
     });
@@ -145,10 +145,10 @@ const TaxTable: React.FC = () => {
   };
 
   // Handle Switch Toggle
-  const handleSwitchChange = (srl: number, active: boolean) => {
-    const updatedTax = taxData.find((item: any) => item.srl === srl);
+  const handleSwitchChange = (nTaxId: number, bActive: boolean) => {
+    const updatedTax = taxData.find((item: any) => item.nTaxId === nTaxId);
     if (updatedTax) {
-      editTax({ ...updatedTax, active });
+      editTax({ ...updatedTax, bActive });
     }
   };
 
@@ -161,10 +161,11 @@ const TaxTable: React.FC = () => {
 
   return (
     <>
+      {loading && <Loader />}
       <div className="mx-4">
-        <div className="flex justify-between items-center  my-4">
+        <div className="flex justify-between flex-wrap items-center my-7">
           <p className="font-semibold text-lg">Tax Master</p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {/* Search Bar */}
             <SearchBar
               onSearch={handleSearch}
@@ -173,17 +174,17 @@ const TaxTable: React.FC = () => {
             />
 
             {/* Action Buttons */}
-            <div className="flex gap-4 ">
+            <div className="flex gap-2">
               {/* Delete Button */}
               <button
-                className=" px-3 text-white bg-red-600  rounded-md hover:bg-red-700 transition-colors"
+                className="text-white bg-[#fa3b3b] flex items-center justify-center w-[32px] h-[33px] rounded-md hover:shadow-md transition-colors"
                 onClick={handleDeleteSelected}
               >
-                <img src={DeleteIcon} />
+                <img src={DeleteIcon} className="w-[19px] h-[20px]" />
               </button>
               {/* Add New Button */}
               <button
-                className=" w-[98px] h-[33px] bg-[#25add7] rounded-md text-white text-md font-semibold hover:bg-[#1a8d9d] transition-colors"
+                className=" w-[98px] h-[33px] bg-[#25add7] rounded-md text-white text-md  hover:bg-[#1a8d9d] transition-colors"
                 onClick={() => setOpenNewModal(true)}
               >
                 Add New
@@ -226,7 +227,7 @@ const TaxTable: React.FC = () => {
             </tr>
           </thead>
           {/* Table Body */}
-          
+
           <tbody className="bg-white">
             {currentData?.length === 0 ? (
               <tr>
@@ -245,9 +246,9 @@ const TaxTable: React.FC = () => {
                 >
                   <td className="py-2">
                     <CustomizedCheckbox
-                      checked={selectedRows.includes(item?.srl)}
+                      checked={selectedRows.includes(item?.nTaxId)}
                       onChange={(e) =>
-                        handleRowCheckboxChange(item?.srl, e.target.checked)
+                        handleRowCheckboxChange(item?.nTaxId, e.target.checked)
                       }
                     />
                   </td>
@@ -255,59 +256,59 @@ const TaxTable: React.FC = () => {
                     className="py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item?.srl,
-                        item?.name,
-                        item?.shortname,
-                        item?.active
+                        item?.nTaxId,
+                        item?.cTaxName,
+                        item?.cShortName,
+                        item?.bActive
                       )
                     }
                   >
-                    {item?.srl}
+                    {index + 1}
                   </td>
                   <td
                     className="py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item?.srl,
-                        item?.name,
-                        item?.shortname,
-                        item?.active
+                        item?.nTaxId,
+                        item?.cTaxName,
+                        item?.cShortName,
+                        item?.bActive
                       )
                     }
                   >
-                    {item?.name}
+                    {item?.cTaxName}
                   </td>
                   <td
                     className="py-2"
                     onClick={() =>
                       handleClickOpen(
-                        item?.srl,
-                        item?.name,
-                        item?.shortname,
-                        item?.active
+                        item?.nTaxId,
+                        item?.cTaxName,
+                        item?.cShortName,
+                        item?.bActive
                       )
                     }
                   >
-                    {item?.shortname}
+                    {item?.cShortName}
                   </td>
                   <td className="py-2 text-center">
                     <CustomSwitch
-                      checked={item?.active}
+                      checked={item?.bActive}
                       onChange={(e, checked) =>
-                        handleSwitchChange(item?.srl, checked)
+                        handleSwitchChange(item?.nTaxId, checked)
                       }
                     />
                   </td>
                   <td className="py-2 text-center">
                     <button
-                      aria-label={`Edit ${item?.name}`}
+                      aria-label={`Edit ${item?.cTaxName}`}
                       className="hover:text-blue-500 transition-colors"
                       onClick={() =>
                         handleEditClick(
-                          item?.srl,
-                          item?.name,
-                          item?.shortname,
-                          item?.active
+                          item?.nTaxId,
+                          item?.cTaxName,
+                          item?.cShortName,
+                          item?.bActive
                         )
                       }
                     >
@@ -316,14 +317,14 @@ const TaxTable: React.FC = () => {
                   </td>
                   <td className="py-2 text-center">
                     <button
-                      aria-label={`Delete ${item?.name}`}
+                      aria-label={`Delete ${item?.cTaxName}`}
                       className="hover:text-red-700 transition-colors"
                       onClick={() =>
                         handleClickOpen(
-                          item?.srl,
-                          item?.name,
-                          item?.shortname,
-                          item?.active
+                          item?.nTaxId,
+                          item?.cTaxName,
+                          item?.cShortName,
+                          item?.bActive
                         )
                       }
                     >
@@ -335,7 +336,7 @@ const TaxTable: React.FC = () => {
             )}
           </tbody>
         </table>
-        <div>
+        <div className="absolute bottom-0 right-0 w-full px-4">
           <CustomPagination
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}

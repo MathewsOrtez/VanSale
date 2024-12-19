@@ -7,9 +7,9 @@ import EditIcon from "../../assets/TaxMaster/EditIcon.png"
 interface DeleteTaxModalProps {
   open: boolean;
   onClose: () => void;
-  deleteData: { srl: number; name: string; shortname: string; active: boolean };
-  onDelete: (data: { srl: number; name: string; shortname: string; active: boolean }) => void;
-  onSave: (data: { srl: number; name: string; shortname: string; active: boolean }) => void;
+  deleteData: { nTaxId: number; cTaxName: string; cShortName: string; bActive: boolean };
+  onDelete: (data: { nTaxId: number; cTaxName: string; cShortName: string; bActive: boolean }) => void;
+  onSave: (data: { nTaxId: number; cTaxName: string; cShortName: string; bActive: boolean }) => void;
 }
 
 const DeleteTaxModal: React.FC<DeleteTaxModalProps> = ({
@@ -19,18 +19,19 @@ const DeleteTaxModal: React.FC<DeleteTaxModalProps> = ({
   onDelete,
   onSave,
 }) => {
-  if (!open) return null;
 
-  const [name, setName] = useState(deleteData.name);
-  const [shortname, setShortname] = useState(deleteData.shortname);
-  const [active, setActive] = useState(deleteData.active);
+  const [cTaxName, setCTaxName] = useState(deleteData.cTaxName);
+  const [cShortName, setCShortname] = useState(deleteData.cShortName);
+  const [bActive, setBActive] = useState(deleteData.bActive);
   const [isEditing, setIsEditing] = useState(false); // Track edit mode
 
   // Sync data when modal is opened with new props
   useEffect(() => {
-    setName(deleteData.name);
-    setShortname(deleteData.shortname);
-    setActive(deleteData.active);
+    if(deleteData){
+    setCTaxName(deleteData.cTaxName);
+    setCShortname(deleteData.cShortName);
+    setBActive(deleteData.bActive);
+    }
   }, [deleteData]);
 
   // Handle Delete
@@ -41,15 +42,18 @@ const DeleteTaxModal: React.FC<DeleteTaxModalProps> = ({
 
   // Handle Save
   const handleSave = () => {
-    const updatedData = { srl: deleteData.srl, name, shortname, active };
+    const updatedData = { nTaxId: deleteData.nTaxId, cTaxName, cShortName, bActive };
     onSave(updatedData);
     setIsEditing(false); // Exit edit mode after saving
     onClose();
   };
 
   const handleSwitchChange = (checked: boolean) => {
-    setActive(checked); // Update the local active state
+    setBActive(checked); // Update the local active state
   };
+
+  if (!open) return null;
+
 
   return (
     <div className={`fixed inset-0 bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75`}>
@@ -73,8 +77,8 @@ const DeleteTaxModal: React.FC<DeleteTaxModalProps> = ({
               className={`w-[426px] h-[35px] border border-gray-200 rounded-md focus:border-[#94cef9] focus:outline-none p-2 ${
                 isEditing ? "" : "bg-gray-50 cursor-not-allowed"
               }`}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={cTaxName}
+              onChange={(e) => setCTaxName(e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -87,8 +91,8 @@ const DeleteTaxModal: React.FC<DeleteTaxModalProps> = ({
               className={` w-[250px] h-[35px] border border-gray-200 rounded-md focus:border-[#94cef9] focus:outline-none p-2 ${
                 isEditing ? "" : "bg-gray-50 cursor-not-allowed"
               }`}
-              value={shortname}
-              onChange={(e) => setShortname(e.target.value)}
+              value={cShortName}
+              onChange={(e) => setCShortname(e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -99,7 +103,7 @@ const DeleteTaxModal: React.FC<DeleteTaxModalProps> = ({
           <div className="flex items-center gap-4">
             <span className="font-semibold text-sm">Active/Inactive</span>
             <CustomSwitch
-              checked={active}
+              checked={bActive}
               onChange={(_e, checked) => handleSwitchChange(checked)}
               disabled={!isEditing} // Switch is enabled only in edit mode
             />

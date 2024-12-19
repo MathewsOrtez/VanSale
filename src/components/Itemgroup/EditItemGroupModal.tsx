@@ -1,36 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Close } from "@mui/icons-material";
-import CustomSwitch from "../utilis/CustomSwitch";
-const EditTaxModal: React.FC<{ open: boolean; onClose: () => void,editData:any,onSave: (newRoute: { name: string; shortname: string; active: boolean }) => void}> = ({
+import CustomSwitch from "../../components/utilis/CustomSwitch";
+const EditItemGroupModal: React.FC<{ open: boolean; onClose: () => void,editData:any,onSave: (newRoute: { cItemGroupName: string; cShortName: string; bActive: boolean }) => void}> = ({
   open,
   onClose,
   editData,
   onSave
 }) => {
-  if (!open) return null;
-const [name, setName] = useState(editData.name);
-const [shortname, setShortname] = useState(editData.shortname);
-const [active, setActive] = useState(editData.active);
+
+const [cItemGroupName, setcItemGroupName] = useState(editData.cItemGroupName);
+const [cShortName, setcShortName] = useState(editData.cShortName);
+const [bActive, setbActive] = useState(editData.bActive);
 
  // Update state when editData changes (in case props change)
  useEffect(() => {
-  setName(editData.name);
-  setShortname(editData.shortname);
-  setActive(editData.active);
+  setcItemGroupName(editData.cItemGroupName);
+  setcShortName(editData.cShortName);
+  setbActive(editData.bActive);
 }, [editData]);
 
 const handleSave = () => {
   // Prepare the updated data object
   const updatedData = {
     ...editData,
-    name,
-    shortname,
-    active,
+    cItemGroupName,
+    cShortName,
+    bActive,
   };
   onSave(updatedData);
   onClose(); 
 };
-
+if (!open) return null;
   return (
     <div className="fixed inset-0  bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75">
       <div className="bg-white p-6 rounded-2xl w-[30rem] border-2 border-gray-200 shadow-2xl">
@@ -57,8 +57,8 @@ const handleSave = () => {
             <input
               id="name"
               className="w-[426px] h-[35px] border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={cItemGroupName}
+              onChange={(e) => setcItemGroupName(e.target.value)}
             />
           </div>
           <div className="mb-4">
@@ -71,8 +71,8 @@ const handleSave = () => {
             <input
               id="short-name"
               className="w-[250px] h-[35px] border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none"
-              value={shortname}
-              onChange={(e) => setShortname(e.target.value)}
+              value={cShortName}
+              onChange={(e) => setcShortName(e.target.value)}
             />
           </div>
         </div>
@@ -82,8 +82,8 @@ const handleSave = () => {
           <div className="flex items-center gap-2">
             <span className="mr-2">Active/Inactive</span>
             <CustomSwitch 
-            checked={active}
-            onChange={(e) => setActive(e.target.checked)}/>
+            checked={bActive}
+            onChange={(e) => setbActive(e.target.checked)}/>
           </div>
 
           <div className="flex gap-4 ">
@@ -98,4 +98,4 @@ const handleSave = () => {
   );
 };
 
-export default EditTaxModal;
+export default EditItemGroupModal;

@@ -1,63 +1,97 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { apiRequest } from "../api/apiUtils";
+import { API_DEFAULTS, ENDPOINTS } from "../api/apiConfig";
+import CustomAlert from "../components/utilis/CustomAlert";
 
-// Define the context
 const ItemGroupContext = createContext<any>(null);
 
-// Provider Component
 export const ItemGroupProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [itemGroupData, setItemGroupData] = useState([
-    { srl: 1, name: "Powder", shortname: "Pdr", active: true },
-    { srl: 2, name: "Pickle", shortname: "Pkle", active: false },
-    { srl: 3, name: "Rice", shortname: "Rc", active: false }, 
-    { srl: 4, name: "Bruch", shortname: "Bsh", active: true }, 
-    { srl: 5, name: "Paste", shortname: "Pste", active: false }, 
-    { srl: 6, name: "Sauce", shortname: "Sc", active: true },
-    { srl: 7, name: "Ketchup", shortname: "Ktp", active: true },
-    { srl: 8, name: "Chutney", shortname: "Ctny", active: true },
-    { srl: 9, name: "Chilli", shortname: "Cl", active: true },
-    { srl: 10, name: "Chilli Paste", shortname: "Cp", active: true },
-    { srl: 11, name: "Chilli Powder", shortname: "Cpw", active: true },
-    { srl: 12, name: "Chilli Gold", shortname: "Cpg", active: true },  
-  ]);
+  const [itemGroupData, setItemGroupData] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const addItemGroup = (newItemGroup: any) => {
-    setItemGroupData((prev) => [...prev, { srl: prev.length + 1, ...newItemGroup }]);
+  const fetchItemGroups = async () => {
+    setLoading(true);
+    try {
+      const data = await apiRequest(ENDPOINTS.ITEM_GROUP.LIST, "POST", {
+        cType: "SELECT ALL",
+      });
+      setItemGroupData(data?.rslt?.sort((a: any, b: any) => a.nItemGroupId - b.nItemGroupId) || []);
+    } catch (error) {
+      console.error("Failed to fetch item groups:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const editItemGroup = (updatedData: any) => {
-    setItemGroupData((prev) =>
-      prev.map((item) => (item.srl === updatedData.srl ? updatedData : item))
-    );
+  const addItemGroup = async (newItemGroup: any) => {
+    try {
+      const response = await apiRequest(ENDPOINTS.ITEM_GROUP.SAVE, "POST", {
+        ...newItemGroup,
+        nItemGroupId: 0,
+        dCreatedDate: new Date().toISOString(),
+        dModifiedDate: new Date().toISOString(),
+        nCreatedBy: 0,
+        bActive: newItemGroup.bActive || false,
+        bCancelled: false,
+        bExempted: true,
+        bDiscountApplicable: true,
+        nTaxScheduleId :0,
+        nModifiedBy: 0,
+      });
+      console.log(response);
+      CustomAlert({ type: "success", message: response.cMessage });
+      fetchItemGroups();
+    } catch (error: any) {
+      CustomAlert({ type: "error", message: error.message });
+    }
   };
 
-  const deleteItemGroup = (srl: number) => {
-    // setItemGroupData((prev) => prev.filter((item) => item.srl !== srl));
-    // Reassign sequential `srl` values
-    const filteredData = itemGroupData.filter((item) => item.srl !== srl);
-    setItemGroupData(filteredData.map((item, index) => ({
-      ...item,
-      srl: index + 1, // Assign new serial numbers
-    })));  
+  const editItemGroup = async (updatedItemGroup: any) => {
+    try {
+      const response = await apiRequest(ENDPOINTS.ITEM_GROUP.SAVE, "POST", {
+        ...updatedItemGroup,
+        nItemGroupId: updatedItemGroup.nItemGroupId,
+        bActive: updatedItemGroup.bActive || false,
+        bCancelled: false,
+        nCreatedBy: 0,
+        dCreatedDate: new Date().toISOString(),
+        bExempted: true,
+        bDiscountApplicable: true,
+        nTaxScheduleId :0,
+        dModifiedDate: new Date().toISOString(),
+        nModifiedBy: 0,
+        ...API_DEFAULTS,
+      });
+      console.log(response);
+      CustomAlert({ type: "success", message: response.cMessage });
+      fetchItemGroups();
+    } catch (error: any) {
+      CustomAlert({ type: "error", message: error.message });
+    }
   };
 
-  const deleteChecked = ( selectedRows: number[]) => {
-    setItemGroupData((prev) => {
-      const filteredData = prev.filter((item) => !selectedRows.includes(item.srl));
-      return filteredData.map((item, index) => ({
-        ...item,
-        srl: index + 1,
-      }));
-    });
+  const deleteItemGroup = async (nItemGroupId: number) => {
+    try {
+      const response = await apiRequest(ENDPOINTS.ITEM_GROUP.DELETE, "POST", {
+        cType: "DELETE",
+        nPrimaryKey: nItemGroupId,
+      });
+      // CustomAlert({ type: "success", message: response.cMessage });
+      fetchItemGroups();
+    } catch (error: any) {
+      CustomAlert({ type: "error", message: error.message });
+    }
   };
-  
+
+  useEffect(() => {
+    fetchItemGroups();
+  }, []);
 
   return (
-    <ItemGroupContext.Provider value={{ itemGroupData, addItemGroup ,editItemGroup,deleteItemGroup,deleteChecked
-     }}>
+    <ItemGroupContext.Provider value={{ itemGroupData, addItemGroup, editItemGroup, deleteItemGroup, loading }}>
       {children}
     </ItemGroupContext.Provider>
   );
 };
 
-// Custom hook for accessing the context
 export const useItemGroup = () => useContext(ItemGroupContext);

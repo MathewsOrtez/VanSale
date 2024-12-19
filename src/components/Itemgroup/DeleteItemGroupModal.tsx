@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Close } from "@mui/icons-material";
-import CustomSwitch from "../utilis/CustomSwitch";
+import CustomSwitch from "../../components/utilis/CustomSwitch";
 import DeleteIcon from "../../assets/TaxMaster/DeleteIcon.png"
 import EditIcon from "../../assets/TaxMaster/EditIcon.png"
 
 interface DeleteItemGroupModalProps {
   open: boolean;
   onClose: () => void;
-  deleteData: { srl: number; name: string; shortname: string; active: boolean };
-  onDelete: (data: { srl: number; name: string; shortname: string; active: boolean }) => void;
-  onSave: (data: { srl: number; name: string; shortname: string; active: boolean }) => void;
+  deleteData: { nItemGroupId: number; cItemGroupName: string; cShortName: string; bActive: boolean };
+  onDelete: (data: { nItemGroupId: number; cItemGroupName: string; cShortName: string; bActive: boolean }) => void;
+  onSave: (data: { nItemGroupId: number; cItemGroupName: string; cShortName: string; bActive: boolean }) => void;
 }
 
 const DeleteItemGroupModal: React.FC<DeleteItemGroupModalProps> = ({
@@ -19,18 +19,20 @@ const DeleteItemGroupModal: React.FC<DeleteItemGroupModalProps> = ({
   onDelete,
   onSave,
 }) => {
-  if (!open) return null;
 
-  const [name, setName] = useState(deleteData.name);
-  const [shortname, setShortname] = useState(deleteData.shortname);
-  const [active, setActive] = useState(deleteData.active);
+
+  const [cItemGroupName, setcItemGroupName] = useState(deleteData.cItemGroupName);
+  const [cShortName, setcShortName] = useState(deleteData.cShortName);
+  const [bActive, setbActive] = useState(deleteData.bActive);
   const [isEditing, setIsEditing] = useState(false); // Track edit mode
 
   // Sync data when modal is opened with new props
   useEffect(() => {
-    setName(deleteData.name);
-    setShortname(deleteData.shortname);
-    setActive(deleteData.active);
+    if(deleteData){
+    setcItemGroupName(deleteData.cItemGroupName);
+    setcShortName(deleteData.cShortName);
+    setbActive(deleteData.bActive);
+    }
   }, [deleteData]);
 
   // Handle Delete
@@ -41,15 +43,16 @@ const DeleteItemGroupModal: React.FC<DeleteItemGroupModalProps> = ({
 
   // Handle Save
   const handleSave = () => {
-    const updatedData = { srl: deleteData.srl, name, shortname, active };
+    const updatedData = { nItemGroupId: deleteData.nItemGroupId, cItemGroupName, cShortName, bActive };
     onSave(updatedData);
     setIsEditing(false); // Exit edit mode after saving
     onClose();
   };
 
   const handleSwitchChange = (checked: boolean) => {
-    setActive(checked); // Update the local active state
+    setbActive(checked); // Update the local active state
   };
+  if (!open) return null;
 
   return (
     <div className={`fixed inset-0 bg-opacity-50 flex justify-center items-center z-50 animate-fade-down animate-duration-75`}>
@@ -73,8 +76,8 @@ const DeleteItemGroupModal: React.FC<DeleteItemGroupModalProps> = ({
               className={`w-[426px] h-[35px] border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none ${
                 isEditing ? "" : "bg-gray-50 cursor-not-allowed"
               }`}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={cItemGroupName}
+              onChange={(e) => setcItemGroupName(e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -87,8 +90,8 @@ const DeleteItemGroupModal: React.FC<DeleteItemGroupModalProps> = ({
               className={`w-[250px] h-[35px] border border-gray-200 rounded-md p-2 focus:border-[#94cef9] focus:outline-none ${
                 isEditing ? "" : "bg-gray-50 cursor-not-allowed"
               }`}
-              value={shortname}
-              onChange={(e) => setShortname(e.target.value)}
+              value={cShortName}
+              onChange={(e) => setcShortName(e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -99,7 +102,7 @@ const DeleteItemGroupModal: React.FC<DeleteItemGroupModalProps> = ({
           <div className="flex items-center gap-4">
             <span className="text-sm font-semibold">Active/Inactive</span>
             <CustomSwitch
-              checked={active}
+              checked={bActive}
               onChange={(_e, checked) => handleSwitchChange(checked)}
               disabled={!isEditing} // Switch is enabled only in edit mode
             />

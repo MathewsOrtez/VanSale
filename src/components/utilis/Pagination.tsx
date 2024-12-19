@@ -18,7 +18,7 @@ const CustomPagination: React.FC<{
 
   const countPerPage = [10,20,30]
   return (   
-    <div className="flex w-full   px-4  items-center justify-between p-2 border rounded-md my-2 flex-wrap gap-4 ">
+    <div className="flex w-full   px-4  items-center justify-between p-1 border rounded-md my-2 flex-wrap gap-4 ">
       <div className="text-gray-600 text-sm">
         Showing {(currentPage - 1) * itemsPerPage + 1}-
         {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems}{" "}

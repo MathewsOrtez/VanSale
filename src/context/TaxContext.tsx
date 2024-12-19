@@ -1,59 +1,79 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { apiRequest } from "../api/apiUtils";
+import { ENDPOINTS } from "../api/apiConfig";
+import CustomAlert from "../components/utilis/CustomAlert";
 
-// Define the context
 const TaxContext = createContext<any>(null);
 
-// Provider Component
 export const TaxProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [taxData, setTaxData] = useState([
-    { srl: 1, name: "GST", shortname: "GST", active: true },
-    { srl: 2, name: "VAT", shortname: "VAT", active: false },
-    { srl: 3, name: "IGST", shortname: "IGST", active: true },
-    { srl: 4, name: "CGST", shortname: "CGST", active: false },
-    { srl: 5, name: "SGST", shortname: "SGST", active: true },
-    { srl: 6, name: "UTGST", shortname: "UTGST", active: true },
-    { srl: 7, name: "CESS", shortname: "CESS", active: true },
-  ]);
+  const [taxData, setTaxData] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const addTax = (newTax: any) => {
-    setTaxData((prev) => [...prev, { srl: prev.length + 1, ...newTax }]);
+  const fetchTaxes = async () => {
+    setLoading(true);
+    try {
+      const data = await apiRequest(ENDPOINTS.TAX.LIST, "POST", {
+        cType: "SELECT ALL",
+        nPrimaryKey: 0,
+      });
+      setTaxData(data?.rslt?.sort((a: any, b: any) => a.nTaxId - b.nTaxId) || []);
+    } catch (error) {
+      console.error("Failed to fetch taxes:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const editTax = (updatedData: any) => {
-    setTaxData((prev) =>
-      prev.map((item) => (item.srl === updatedData.srl ? updatedData : item))
-    );
+  const addTax = async (newTax: any) => {
+    try {
+      const response = await apiRequest(ENDPOINTS.TAX.SAVE, "POST", {
+        ...newTax,
+        nTaxId: 0,
+        dCreatedDate: new Date().toISOString(),
+        dModifiedDate: new Date().toISOString(),
+      });
+      CustomAlert({ type: "success", message: response.cMessage });
+      fetchTaxes();
+    } catch (error: any) {
+      CustomAlert({ type: "error", message: error.message });
+    }
   };
 
-  const deleteTax = (srl: number) => {
-    // setTaxData((prev) => prev.filter((item) => item.srl !== srl));
-    setTaxData((prev) => {
-      const filteredData = prev.filter((item) => item.srl !== srl);
-      return filteredData.map((item, index) => ({
-        ...item,
-        srl: index + 1,
-      })); 
-    });
+  const editTax = async (updatedTax: any) => {
+    try {
+      const response = await apiRequest(ENDPOINTS.TAX.SAVE, "POST", {
+        ...updatedTax,
+        dModifiedDate: new Date().toISOString(),
+      });
+      CustomAlert({ type: "success", message: response.cMessage });
+      fetchTaxes();
+    } catch (error: any) {
+      CustomAlert({ type: "error", message: error.message });
+    }
   };
 
-  const deleteChecked = ( selectedRows: number[]) => {
-    setTaxData((prev) => {
-      const filteredData = prev.filter((item) => !selectedRows.includes(item.srl));
-      return filteredData.map((item, index) => ({
-        ...item,
-        srl: index + 1,
-      }));
-    });
+  const deleteTax = async (nTaxId: number) => {
+    try {
+      const response = await apiRequest(ENDPOINTS.TAX.DELETE, "POST", {
+        cType: "DELETE",
+        nPrimaryKey: nTaxId,
+      });
+      CustomAlert({ type: "success", message: response.cMessage });
+      fetchTaxes();
+    } catch (error: any) {
+      CustomAlert({ type: "error", message: error.message });
+    }
   };
-  
+
+  useEffect(() => {
+    fetchTaxes();
+  }, []);
 
   return (
-    <TaxContext.Provider value={{ taxData, addTax ,editTax,deleteTax ,deleteChecked
-     }}>
+    <TaxContext.Provider value={{ taxData, addTax, editTax, deleteTax, loading }}>
       {children}
     </TaxContext.Provider>
   );
 };
 
-// Custom hook for accessing the context
 export const useTax = () => useContext(TaxContext);
